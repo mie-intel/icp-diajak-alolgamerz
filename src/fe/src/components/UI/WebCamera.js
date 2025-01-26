@@ -14,7 +14,7 @@ export default function WebCamera({ className }) {
   };
   return (
     <div className={cn("relative h-[500px] w-[500px]", className)}>
-      <Webcam className="h-full w-full" audio ref={webcamRef} />
+      <Webcam className="h-full w-full" audio ref={webcamRef} videoConstraints={videoConstraints} />
     </div>
   );
 }

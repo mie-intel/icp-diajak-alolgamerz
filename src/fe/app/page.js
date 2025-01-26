@@ -4,7 +4,7 @@ import WebCamera from "@/components/UI/WebCamera";
 export default function Home() {
   return (
     <DefaultLayout>
-      <WebCamera className="relative h-[600px] w-[600px] bg-[black]" />
+      <WebCamera className="relative h-full w-full bg-[black]" />
     </DefaultLayout>
   );
 }
