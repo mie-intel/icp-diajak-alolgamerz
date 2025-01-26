@@ -1,0 +1,13 @@
+{
+    "canisters": {
+        "backend": {
+            "type": "azle",
+            "main": "src/be/index.ts",
+            "custom": {
+                "experimental": true,
+                "assets": [["src/fe/public", "dist"]],
+                "build_assets": "npm run build"
+            }
+        }
+    }
+}
