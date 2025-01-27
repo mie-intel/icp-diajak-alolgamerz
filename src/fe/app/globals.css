@@ -23,7 +23,7 @@ body {
 /* Font */
 @font-face {
   font-family: "dmSans";
-  src: url("../src/assets/font/DM_Sans/static/DMSans_18pt-Medium.ttf");
+  src: url("../public/assets/font/DM_Sans/static/DMSans_18pt-Medium.ttf");
   font-weight: normal;
   font-style: normal;
 }

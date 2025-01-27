@@ -1,5 +1,7 @@
 import AuthLayout from "@/components/layout/AuthLayout";
 import "../globals.css";
+import DashboardLayout from "@/components/layout/DashboardLayout";
+import Sidebar from "@/components/UI/Sidebar";
 
 export const metadata = {
   title: "Diajak Alolgamerz Web3",
@@ -9,8 +11,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="antialiased">
-        <AuthLayout>{children}</AuthLayout>
+      <body className="flex antialiased">
+        <Sidebar />
+        <DashboardLayout>{children}</DashboardLayout>
       </body>
     </html>
   );

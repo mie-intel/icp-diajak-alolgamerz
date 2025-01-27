@@ -11,6 +11,12 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        white: "#FFFFFF",
+        grey: "#F4F7FE",
+        lightpurple: "#A3BDFF",
+        purple: "#A3AED0",
+        darkpurple: "#3F45A5",
+        blackpurple: "#2B3674",
       },
       fontFamily: {
         dmSans: ["dmSans", "sans-serif"],
