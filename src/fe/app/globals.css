@@ -19,3 +19,11 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Font */
+@font-face {
+  font-family: "dmSans";
+  src: url("../public/assets/font/DM_Sans/static/DMSans_18pt-Medium.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
