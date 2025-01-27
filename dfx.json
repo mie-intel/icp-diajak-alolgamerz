@@ -1,11 +1,12 @@
 {
     "canisters": {
-        "backend": {
+        "contractor": {
             "type": "azle",
-            "main": "src/be/index.ts",
+            "main": "src/be/index.js",
             "custom": {
                 "experimental": true,
-                "assets": [["src/fe/public", "dist"]],
+                "candid_gen": "http",
+                "assets": [["src/fe/out", "public"]],
                 "build_assets": "npm run build"
             }
         }
