@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 
 export function loader({ src, width }) {
-  return `${process.env.NEXT_PUBLIC_BASE_URL}${src}?imwidth=${width}`;
+  return `${src}?imwidth=${width}`;
 }
 
 loader.PropTypes = {
