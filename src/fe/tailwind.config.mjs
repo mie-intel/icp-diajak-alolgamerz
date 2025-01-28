@@ -20,6 +20,7 @@ export default {
       },
       fontFamily: {
         dmSans: ["dmSans", "sans-serif"],
+        dmSansRegular: ["dmSansRegular", "sans-serif"],
       },
     },
   },
