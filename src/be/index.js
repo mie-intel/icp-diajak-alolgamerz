@@ -1,10 +1,5 @@
-import express from "express";
-const app = express();
+import { Server } from "azle/experimental";
+import server from "./server";
+import candid from "./candid";
 
-app.use(express.static("public"));
-app.use(express.json());
-app.get("/", (req,res)=>{
-  res.send("Haloo");
-});
-
-app.listen();
+export default Server(()=>{return server;}, candid);
