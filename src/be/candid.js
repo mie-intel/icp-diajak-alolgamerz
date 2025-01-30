@@ -2,9 +2,12 @@ import {
     init,
     postUpgrade,
     preUpgrade,
-    StableBTreeMap
+    query,
+    StableBTreeMap,
+    text
 } from "azle/experimental";
-import { db, initDB } from "./modules/db";
+import { db, initDB } from "./modules/db.js";
+import { caller } from "azle";
 
 export default {
     init: init([], async ()=>{
@@ -15,5 +18,11 @@ export default {
     }),
     postUpgrade: postUpgrade([], async ()=>{
         await initDB(StableBTreeMap(0).get("DATABASE"));
+    }),
+    identity: query([], text, ()=>{
+        return caller().toString();
+    }),
+    candidQuery: query([], text, ()=>{
+        return "Hello";
     })
 };
