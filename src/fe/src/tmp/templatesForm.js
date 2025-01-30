@@ -52,16 +52,3 @@ export default function App() {
     </DashboardBox>
   );
 }
-
-/*
-      <DashboardBox
-        className={
-          "relative grid auto-rows-min grid-cols-1 gap-[15px] bg-grey md:grid-cols-2 xl:grid-cols-3"
-        }
-      >
-        <CardContract className="w-full" />
-        <CardContract className="w-full" />
-        <CardContract className="w-full" />
-        <CardContract className="w-full" />
-      </DashboardBox>
-*/
