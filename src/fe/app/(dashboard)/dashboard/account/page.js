@@ -35,7 +35,9 @@ export default function Page() {
           </TableBody>
           <TableBody>
             <TableRow>
-              <TableCell bold>Example Document 1</TableCell>
+              <TableCell bold>
+                Example Document 1 Example Document 1 Example Document 1Example Document 1
+              </TableCell>
               <TableCell>Document</TableCell>
               <TableCell>Company 1</TableCell>
               <TableCell>24 Jan 2024</TableCell>

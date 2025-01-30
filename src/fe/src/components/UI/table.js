@@ -5,7 +5,7 @@ import { cn } from "@/libs/utils";
 
 export function Table({ className, ...props }) {
   return (
-    <div className="w-full overflow-auto">
+    <div className="relative w-full overflow-x-auto">
       <table className={cn("w-full caption-bottom text-lg", className)} {...props} />
     </div>
   );
@@ -31,7 +31,7 @@ export function TableHead({ className, children, ...props }) {
   return (
     <th
       className={cn(
-        "text-muted-foreground h-7 text-left align-middle text-sm font-medium text-lightpurple lg:text-[14px] [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+        "text-muted-foreground h-7 text-nowrap break-words text-left align-middle text-sm font-medium text-lightpurple lg:max-w-[300px] lg:text-[14px] [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
         className,
       )}
       {...props}
@@ -58,7 +58,7 @@ export function TableCell({ className, bold, ...props }) {
   return (
     <td
       className={cn(
-        "text-muted-foreground mt-0 pt-[12px] text-sm lg:mt-[8px] lg:text-[14px]",
+        "text-muted-foreground mt-0 break-words pt-[12px] text-[10px] leading-tight md:text-sm lg:mt-[8px] lg:max-w-[200px] lg:text-[14px]",
         className,
         bold && "font-[700]",
       )}
