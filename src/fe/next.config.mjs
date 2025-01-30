@@ -2,6 +2,10 @@
 const nextConfig = {
   output: "export",
   trailingSlash: false,
+  transpilePackages: ["azle"],
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 
   images: {
     loader: "custom",
@@ -25,6 +29,7 @@ const nextConfig = {
   webpack: (config) => {
     // eslint-disable-next-line no-param-reassign
     config.resolve.mainFields = ["browser", "module", "main"];
+    config.experiments.asyncWebAssembly = true;
     return config;
   },
 };

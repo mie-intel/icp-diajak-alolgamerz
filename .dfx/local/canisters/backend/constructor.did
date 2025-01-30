@@ -1,4 +1,5 @@
 service : () -> {
+  candidQuery : () -> (text) query;
   http_request : (
       record {
         url : text;
@@ -46,4 +47,5 @@ service : () -> {
         status_code : nat16;
       },
     );
+  identity : () -> (text) query;
 }
