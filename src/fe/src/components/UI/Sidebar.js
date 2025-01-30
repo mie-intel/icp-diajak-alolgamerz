@@ -4,6 +4,7 @@ import { cn } from "@/libs/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MdFileCopy, MdHome, MdPerson } from "react-icons/md";
+import { AiFillPlusCircle } from "react-icons/ai";
 
 export default function Sidebar() {
   const path = [
@@ -25,17 +26,16 @@ export default function Sidebar() {
   ];
 
   const curPath = usePathname();
-  let lastPath = curPath.split("/");
-  lastPath = lastPath.length !== 1 ? lastPath[lastPath.length - 1] : "";
 
   return (
-    <div className="font-dmSans text-blackpurple relative flex min-h-screen w-[18%] flex-col items-end gap-[20px] bg-white">
+    <div className="relative flex min-h-screen w-[18%] flex-col items-end gap-[20px] bg-white font-dmSans text-blackpurple">
       {/* Head */}
       <div className="flex aspect-[270/130] w-full items-center justify-center gap-[2px] text-[9px] md:text-[15px] lg:text-[20px] 2xl:text-[25px]">
         <h1>Arya</h1>
         <p>|</p>
         <h2>Apo</h2>
       </div>
+      {/* Path 3 tempat */}
       <div className="flex h-auto min-h-fit w-full flex-col">
         {path.map((item) => {
           return (
@@ -44,7 +44,7 @@ export default function Sidebar() {
               href={item.href}
               className={cn(
                 curPath === item.href ? "text-blackpurple" : "text-purple",
-                "hover:bg-lightpurple group relative flex aspect-[9/2] w-[100%] flex-row items-center justify-start gap-[5px] pl-[10%] text-[20px] transition-all duration-500 hover:text-white",
+                "group relative flex aspect-[9/2] w-[100%] flex-row items-center justify-start gap-[5px] pl-[10%] text-[20px] transition-all duration-300 hover:bg-lightpurple hover:text-white",
               )}
             >
               {item.icon}
@@ -54,13 +54,31 @@ export default function Sidebar() {
 
               <div
                 className={cn(
-                  curPath === item.href ? "bg-darkpurple" : "group-hover:bg-lightpurple bg-white",
-                  "absolute right-0 h-full w-[2.5%] rounded-lg transition-all duration-500",
+                  curPath === item.href ? "bg-darkpurple" : "bg-white group-hover:bg-lightpurple",
+                  "absolute right-0 h-full w-[2.5%] rounded-lg transition-all duration-300",
                 )}
               />
             </Link>
           );
         })}
+      </div>
+      {/* New Contract */}
+
+      <div className="flex w-full items-center justify-center">
+        <button
+          type="button"
+          className="group flex w-[80%] items-center justify-center bg-lightpurple text-[8px] font-[600] text-white duration-300 hover:bg-darkpurple hover:text-lightpurple active:bg-lightpurple active:text-grey md:rounded-md lg:rounded-xl lg:text-[12px] xl:text-[15px] 2xl:text-[18px]"
+        >
+          <Link
+            href="/dashboard/new-contract"
+            className="flex h-full w-full items-center justify-between py-[5%] pl-[7%] pr-[5%]"
+          >
+            New Contract
+            <div className="relative flex aspect-square w-[20%] items-center justify-center rounded-lg bg-grey p-0 text-lightpurple duration-300 group-hover:bg-lightpurple group-hover:text-darkpurple group-active:bg-grey group-active:text-lightpurple">
+              <AiFillPlusCircle className="absolute aspect-square h-[60%] w-[60%]" />
+            </div>
+          </Link>
+        </button>
       </div>
     </div>
   );

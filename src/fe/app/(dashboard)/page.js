@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <DefaultLayout>
       {/* <WebCamera className="relative h-[1000px] w-[1000px] bg-[black]" /> */}
-      <div className="font-dmSans h-full w-full text-[50px] font-[700] text-black">Register</div>
+      {/* <div className="h-full w-full font-dmSans text-[50px] font-[700] text-black">Register</div> */}
     </DefaultLayout>
   );
 }
