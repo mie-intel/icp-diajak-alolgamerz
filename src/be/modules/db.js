@@ -1,5 +1,5 @@
 import initSqlJs from "sql.js/dist/sql-asm.js";
-import { log } from "./log";
+import { log } from "./log.js";
 
 // const initialQuery = 
 // `

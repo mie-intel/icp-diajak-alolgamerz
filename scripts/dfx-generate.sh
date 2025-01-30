@@ -1,0 +1,1 @@
+dfx generate && cat "./scripts/dfx-index.js" > "./src/declarations/backend/index.js"

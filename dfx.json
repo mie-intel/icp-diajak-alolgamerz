@@ -1,14 +1,16 @@
 {
     "canisters": {
-        "contractor": {
+        "backend": {
             "type": "azle",
             "main": "src/be/index.js",
             "custom": {
-                "experimental": true,
-                "candid_gen": "http",
-                "assets": [["src/fe/out", "public"]],
-                "build_assets": "npm run build"
+                "experimental": true
             }
+        },
+        "system_api": {
+            "candid": "src/system_api/vetkd_system_api.did",
+            "package": "vetkd_system_api",
+            "type": "rust"
         }
     }
 }

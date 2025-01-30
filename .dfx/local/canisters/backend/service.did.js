@@ -1,5 +1,6 @@
 export const idlFactory = ({ IDL }) => {
   return IDL.Service({
+    'candidQuery' : IDL.Func([], [IDL.Text], ['query']),
     'http_request' : IDL.Func(
         [
           IDL.Record({
@@ -77,6 +78,7 @@ export const idlFactory = ({ IDL }) => {
         ],
         [],
       ),
+    'identity' : IDL.Func([], [IDL.Text], ['query']),
   });
 };
 export const init = ({ IDL }) => { return []; };
