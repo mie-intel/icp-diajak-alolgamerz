@@ -3,7 +3,6 @@ import { contractsModel, itemsModel, userModel } from "../modules/models";
 import { createDiffieHellman } from "crypto";
 import dotenv from "dotenv";
 import { encrypt, getKE, updateKE } from "../dev/keyExchange";
-import { isReadable } from "stream";
 
 dotenv.config({ path: ".env.local" });
 
@@ -455,7 +454,7 @@ describe("API Testing", ()=>{
                         description: "description",
                         parties: [1, 2, 3],
                         type: "document",
-                        fileBlob: encrypt(Buffer.from("sigma").toString("base64"), sharedSecret)
+                        fileBlob: Buffer.from("sigma").toString("base64")
                     })).data;
                     expect(Object.keys(data)).toEqual(itemsModel.keys);
                 });

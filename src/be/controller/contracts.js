@@ -1,6 +1,6 @@
 import { contractsModel, itemsModel, userModel } from "../modules/models";
 import { contractsBodySchema, contractsIDBodySchema, itemBodySchema, itemIDBodySchema } from "../modules/schema";
-import { createDiffieHellman } from "crypto";
+import { createDiffieHellman, createHash } from "crypto";
 
 export function GETroot(req, res) {
     const cIDs = JSON.parse(userModel.get({ uID: req.session.uID })[0].contracts);
@@ -177,6 +177,14 @@ export function POSTidItem(req, res) {
         return {uID: uID, state: "pending"};
     }));
     req.body.cID = req.params.cID;
+
+    if(req.body.type === "document") {
+        // Create hash
+        req.body.hash = createHash(process.env.HASH_ALGORITHM).update(Buffer.from(req.body.fileBlob, "base64")).digest().toString("base64");
+
+        // TODO: Upload data to IPFS
+    }
+
     itemsModel.create(req.body);
 
     // Update contracts itemID

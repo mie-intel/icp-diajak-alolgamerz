@@ -36,6 +36,8 @@ create table if not exists items (
 	type string not null,
 	isFinalised integer not null default 0,
 	dateCreated text not null default current_timestamp,
+	hash text not null default "",
+	
     /* IF_TYPE == file */
 	fileURL text,
 

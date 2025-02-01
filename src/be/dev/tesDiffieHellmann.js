@@ -1,4 +1,5 @@
 import { createDiffieHellman } from "crypto";
+import { encrypt, decrypt } from "./keyExchange.js";
 
 const arr = [];
 const userKeys = [];
@@ -75,7 +76,13 @@ for (let i = 1; i < hasil.length; i++) {
 }
 
 sm(tmpsec, hasil[hasil.length-1])
-console.log((flag ? "\x1b[42;1mBERHASIL" : "\x1b[41;1mGAGAL") + "\x1b[0m");
+
+let flag2 = false;
+
+const data = "aku mau bebek";
+flag2 = Buffer.from(decrypt(encrypt(Buffer.from(data, "utf-8").toString("base64"), tmpsec.toString("base64")), tmpsec.toString("base64")), "base64").toString("utf-8") === data;
+
+console.log(((flag && flag2) ? "\x1b[42;1mBERHASIL" : "\x1b[41;1mGAGAL") + "\x1b[0m");
 
 // const alice = createDiffieHellman(2048);
 // const aliceKey = alice.generateKeys();
