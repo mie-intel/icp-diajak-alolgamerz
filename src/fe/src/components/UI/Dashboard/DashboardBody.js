@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/libs/utils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AiFillCheckCircle, AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 export function DashboardBox({ children, className }) {
@@ -91,20 +91,6 @@ export function DashboardData({ className, title, isi, hidden = false, verified 
           </div>
         )}
       </div>
-    </div>
-  );
-}
-
-export function DashboardDataInput({ className, title, isi, placeholder, hidden = false }) {
-  return (
-    <div className={cn("relative mt-[18px] flex w-full flex-col font-dmSans", className)}>
-      <h3 className="font-[700] text-lightpurple md:text-[13px] xl:text-[17px]">{title}</h3>
-      <input
-        type={hidden && "password"}
-        className={cn(
-          "relative flex w-fit max-w-full flex-row gap-[10px] text-wrap break-all font-dmSansRegular text-black md:text-[14px] xl:text-[18px]",
-        )}
-      />
     </div>
   );
 }

@@ -2,16 +2,10 @@
   "compilerOptions": {
     "paths": {
       "@/src/*": ["../*"],
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
     "target": "ES2017",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -33,9 +27,10 @@
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "app/(backend_testing)/layout.js", "app/(backend_testing)/layout.js"  ],
-  "exclude": [
-    "node_modules"
-  ]
+    "**/*.tsx",
+    "app/(backend_testing)/layout.js",
+    "app/(backend_testing)/layout.js",
+    "app/(auth)/auth/register/page.js"
+  ],
+  "exclude": ["node_modules"]
 }
