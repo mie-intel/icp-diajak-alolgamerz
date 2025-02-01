@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function AuthLayout({ children }) {
   return (
     <section className="flex min-h-screen w-full flex-row max-lg:bg-[url('/assets/auth/bg.png')] max-lg:bg-cover max-lg:bg-right lg:bg-none">
-      <div className="absolute bottom-0 h-min w-full overflow-clip bg-white pt-[5px] max-lg:rounded-t-[50px] md:pt-[20px] lg:relative lg:h-screen lg:w-[50%] lg:pt-0">
+      <div className="absolute bottom-0 h-min w-full overflow-clip bg-white pb-[15px] pt-[5px] max-lg:rounded-t-[50px] md:pb-[30px] md:pt-[20px] lg:relative lg:h-screen lg:w-[50%] lg:pt-0">
         {children}
       </div>
       <div className="min-h-screen w-[50%] bg-white max-lg:hidden">

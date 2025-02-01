@@ -33,11 +33,11 @@ export default function NewContract() {
       <DashboardHeader />
       <DashboardBox>
         <DashboardBox className="flex flex-col items-center lg:!w-[60%] xl:!w-[47%] 2xl:!w-[40%]">
-          {/* <DashboardSuperTitle title="Add new Item" className="!mt-0" /> */}
+          <DashboardSuperTitle title="Add new Item" className="!mt-0" />
           <Form onSubmit={handleSubmit(onSubmit)}>
             <FormInputText
               placeholder="Example Contract Name"
-              title="Contract Name"
+              title="Item name"
               register={register("contractName")}
               error={errors?.contractName}
             />

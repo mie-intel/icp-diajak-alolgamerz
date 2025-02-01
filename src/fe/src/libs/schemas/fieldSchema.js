@@ -57,7 +57,7 @@ export const descriptionSchema = z
 
 export const publicKeySchema = z.string({ required_error: "Public key must be filled!" });
 
-export const partiesListSchema = publicKeySchema;
+export const partiesListSchema = z.string({ required_error: "Parties must be filled!" });
 
 export const boolSchema = z.boolean();
 

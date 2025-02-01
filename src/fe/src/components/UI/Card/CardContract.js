@@ -30,12 +30,12 @@ export function CardContract({
   return (
     <div
       className={cn(
-        "relative flex aspect-[352/238] w-[27%] flex-col justify-between rounded-xl bg-white p-[20px] xl:rounded-3xl",
+        "relative flex aspect-[352/238] w-[27%] flex-col justify-between rounded-xl bg-white p-[20px] duration-500 hover:scale-[1.01] hover:bg-[#E5ECFF] xl:rounded-3xl",
         className,
       )}
     >
       <div className="flex h-full w-full flex-col">
-        <div className="relative h-[38%] w-full overflow-clip rounded-lg bg-[red] lg:rounded-2xl">
+        <div className="relative h-[38%] w-full overflow-clip rounded-lg lg:rounded-2xl">
           <Image alt="gambar kontrak" src="/assets/auth/bg.png" fill />
         </div>
         <DashboardTitle title={contracts.title} className={"mt-[12px] text-black"} />

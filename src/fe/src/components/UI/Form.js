@@ -10,7 +10,7 @@ export function Form({ className = "", ...props }) {
 
 export function FormInputText({
   className = "",
-  title,
+  title = "",
   placeholder = "",
   hidden = false,
   error = null,
@@ -43,7 +43,7 @@ export function FormInputText({
             {...register}
             type={hidden && !showHidden ? "password" : "text"}
             placeholder={placeholder}
-            className="] relative h-full w-full bg-inherit p-[13px] font-dmSansRegular text-[10px] text-black outline-0 max-md:px-[16px] md:p-[18px] md:text-[14px] xl:text-[18px]"
+            className="relative h-full w-full bg-inherit p-[13px] font-dmSansRegular text-[10px] text-black outline-0 max-md:px-[16px] md:p-[18px] md:text-[14px] xl:text-[18px]"
           />
           {isClient && hidden && (
             <button
@@ -65,16 +65,14 @@ export function FormInputText({
   );
 }
 
-export function FormTextArea({ className = "", title, placeholder = "", error = null, register }) {
-  const [isClient, setIsClient] = useState(false);
-  const [showHidden, setShowHidden] = useState(false);
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-  const handleShowHidden = () => {
-    if (!hidden) return;
-    setShowHidden(!showHidden);
-  };
+export function FormTextArea({
+  className = "",
+  title = "",
+  placeholder = "",
+  rows = 5,
+  error = null,
+  register,
+}) {
   return (
     <>
       <div
@@ -89,11 +87,11 @@ export function FormTextArea({ className = "", title, placeholder = "", error = 
             "relative mt-[5px] flex w-full flex-row items-center overflow-clip rounded-2xl bg-grey pr-[7px] md:mt-[8px] md:pr-[13px] lg:mt-[11px] xl:pr-[18px] 2xl:rounded-3xl",
           )}
         >
-          <input
+          <textarea
             {...register}
-            type={hidden && !showHidden ? "password" : "text"}
             placeholder={placeholder}
-            className="] relative h-full w-full bg-inherit p-[13px] font-dmSansRegular text-[10px] text-black outline-0 max-md:px-[16px] md:p-[18px] md:text-[14px] xl:text-[18px]"
+            rows={rows}
+            className="relative h-full w-full bg-inherit p-[13px] font-dmSansRegular text-[10px] text-black outline-0 max-md:px-[16px] md:p-[18px] md:text-[14px] xl:text-[18px]"
           />
         </div>
       </div>
