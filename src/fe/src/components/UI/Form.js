@@ -11,7 +11,7 @@ export function Form({ className = "", ...props }) {
 export function FormInputText({
   className = "",
   title,
-  placeholder = "Ay",
+  placeholder = "",
   hidden = false,
   error = null,
   register,
