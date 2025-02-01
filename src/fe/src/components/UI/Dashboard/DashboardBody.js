@@ -4,7 +4,7 @@ import { cn } from "@/libs/utils";
 import { useState, useEffect } from "react";
 import { AiFillCheckCircle, AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
-export function DashboardBox({ children, className }) {
+export function DashboardBox({ className = "", children = null }) {
   return (
     <div
       className={cn(
@@ -17,46 +17,65 @@ export function DashboardBox({ children, className }) {
   );
 }
 
-export function DashboardTitle({ className, title }) {
+export function DashboardSuperTitle({ className = "", title = "" }) {
   return (
-    <div
+    <h2
       className={cn(
-        "relative mt-[20px] flex w-full flex-col font-dmSans font-[700] text-darkpurple",
+        "relative mt-[20px] flex w-full flex-col text-left font-dmSans text-[20px] font-normal text-black md:mb-[7px] md:text-[30px] lg:mb-[20px] lg:text-left lg:text-[34px] 2xl:text-[37px]",
         className,
       )}
     >
-      <h2 className="md:text-[23px] xl:text-[27px]">{title}</h2>
-    </div>
+      {title}
+    </h2>
   );
 }
 
-export function DashboardHeading({ className, title }) {
+export function DashboardTitle({ className = "", title = "" }) {
   return (
-    <div
+    <h2
       className={cn(
-        "relative mt-[20px] flex w-full flex-col font-dmSans font-[700] text-darkpurple",
+        "relative mt-[20px] flex w-full flex-col font-dmSans font-[700] text-darkpurple md:text-[23px] xl:text-[27px]",
         className,
       )}
     >
-      <h2 className="md:text-[20px] xl:text-[24px]">{title}</h2>
-    </div>
+      {title}
+    </h2>
   );
 }
 
-export function DashboardSectionTitle({ className, title }) {
+export function DashboardHeading({ className = "", title = "" }) {
   return (
-    <div
+    <h2
       className={cn(
-        "relative mt-[20px] flex w-full flex-col font-dmSans font-[500] text-darkpurple",
+        "relative mt-[20px] flex w-full flex-col font-dmSans font-[700] text-darkpurple md:text-[20px] xl:text-[24px]",
         className,
       )}
     >
-      <h2 className="md:text-[16px] xl:text-[20px]">{title}</h2>
-    </div>
+      {title}
+    </h2>
   );
 }
 
-export function DashboardData({ className, title, isi, hidden = false, verified = false }) {
+export function DashboardSectionTitle({ className = "", title = "" }) {
+  return (
+    <h3
+      className={cn(
+        "relative mt-[20px] flex w-full flex-col font-dmSans font-[500] text-darkpurple md:text-[16px] xl:text-[20px]",
+        className,
+      )}
+    >
+      {title}
+    </h3>
+  );
+}
+
+export function DashboardData({
+  className = "",
+  title = "",
+  isi = "",
+  hidden = false,
+  verified = false,
+}) {
   const [showHidden, setShowHidden] = useState(!hidden);
   const handleShowHidden = () => {
     if (!hidden) return;
