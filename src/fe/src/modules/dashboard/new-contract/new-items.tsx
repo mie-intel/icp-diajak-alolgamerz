@@ -6,9 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { newContractSchema } from "@/libs/schemas/contracts";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { Form, FormInputText, FormTextArea, FormSubmit } from "@/components/UI/Form";
+import { Form, FormInputText, FormTextArea, FormSubmit, FormSelect } from "@/components/UI/Form";
 
-export default function NewContract() {
+export default function NewItems() {
   type NewContractValues = z.infer<typeof newContractSchema>;
 
   const {
@@ -41,19 +41,20 @@ export default function NewContract() {
               register={register("contractName")}
               error={errors?.contractName}
             />
-            <FormInputText
+            <FormSelect title="Parties" placeholder="Select Multiple Options" />
+            {/* <FormInputText
               title="Parties"
               placeholder="Enter parties name, separated by comma (,)"
               register={register("partiesList")}
               error={errors?.partiesList}
-            />
-            <FormTextArea
+            /> */}
+            {/* <FormTextArea
               title="Contract Description"
               placeholder="Enter text"
               rows={7}
               register={register("contractDescription")}
               error={errors?.contractDescription}
-            />
+            /> */}
             <FormSubmit className="w-full lg:w-[45%]" outline>
               Create Contract
             </FormSubmit>

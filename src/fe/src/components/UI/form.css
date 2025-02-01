@@ -1,0 +1,71 @@
+/* Wrapper to control the select element styling */
+.custom-select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Select dropdown styling */
+.custom-select {
+  /* Remove default appearance */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  /* Box styles */
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: white;
+  color: black;
+
+  /* Text styling */
+  font-family: "DM Sans", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+
+  /* Interactivity */
+  cursor: pointer;
+  outline: none;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* Hover and focus states */
+.custom-select:hover {
+  border-color: #888;
+}
+
+.custom-select:focus {
+  border-color: #7d4cdb; /* Purple focus color */
+  box-shadow: 0 0 0 2px rgba(125, 76, 219, 0.3);
+}
+
+/* Styling options (only background and color are reliable for <option>) */
+.custom-select option {
+  background-color: white;
+  color: black;
+
+  /* Text styling */
+  font-family: "DM Sans", sans-serif;
+  font-size: 14px;
+}
+
+/* Optional: Custom dropdown arrow */
+.custom-select-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  pointer-events: none;
+
+  /* Arrow styles */
+  width: 10px;
+  height: 10px;
+  background-color: transparent;
+  border-style: solid;
+  border-width: 5px 5px 0 5px;
+  border-color: #333 transparent transparent transparent;
+}

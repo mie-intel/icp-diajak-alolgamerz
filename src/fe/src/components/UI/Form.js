@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { cn } from "@/libs/utils";
+import "./form.css";
 
 export function Form({ className = "", ...props }) {
   return <form className={cn("flex w-full flex-col bg-inherit", className)} {...props} />;
@@ -99,6 +100,70 @@ export function FormTextArea({
     </>
   );
 }
+
+export function FormSelect({
+  className = "",
+  title = "",
+  placeholder = "",
+  options = ["Arya1", "Arya2", "Arya3"],
+  multiple = false,
+  error = null,
+  ...props
+}) {
+  return (
+    <>
+      <div
+        className={cn(
+          "relative mt-[10px] flex w-full flex-col font-dmSans md:mt-[18px]",
+          className,
+        )}
+      >
+        {title && <h3 className="text-[10px] text-black md:text-[13px] xl:text-[17px]">{title}</h3>}
+        <div
+          className={cn(
+            "relative mt-[5px] flex w-full flex-row items-center overflow-clip rounded-2xl bg-grey pr-[7px] md:mt-[8px] md:pr-[13px] lg:mt-[11px] 2xl:rounded-3xl",
+          )}
+        >
+          <select
+            // {...register}
+            multiple
+            placeholder={placeholder}
+            className="relative flex h-full w-full justify-center bg-inherit p-[13px] font-dmSansRegular text-[10px] text-black outline-0 md:p-[18px] md:text-[14px] xl:pr-[18px] xl:text-[18px]"
+          >
+            {options.map((item) => {
+              return (
+                <>
+                  <option
+                    key={item}
+                    value={item}
+                    className="relative h-fit w-full bg-inherit font-dmSansRegular text-[10px] text-black outline-0 max-md:px-[16px] md:text-[14px] xl:text-[18px]"
+                  >
+                    {item}
+                  </option>
+                </>
+              );
+            })}
+          </select>
+          {/* {isClient && hidden && (
+            <button
+              type="button"
+              onClick={handleShowHidden}
+              className="aspect-[1/1] w-[25px] text-lightpurple hover:text-purple"
+            >
+              {showHidden ? (
+                <AiFillEye className="h-full w-full" />
+              ) : (
+                <AiFillEyeInvisible className="h-full w-full" />
+              )}
+            </button>
+          )} */}
+        </div>
+      </div>
+      {error && <p className="text-red-500">{error.message}</p>}
+    </>
+  );
+}
+
 export function FormSubmit({ className = "", children = "Submit", outline = false, ...props }) {
   return (
     <>
