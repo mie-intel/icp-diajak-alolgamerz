@@ -1,67 +1,43 @@
 "use client";
 
 import { DashboardBox } from "@/components/UI/Dashboard/DashboardBody";
-import { useEffect } from "react";
+import { DashboardData } from "@/components/UI/Dashboard/DashboardBody";
+import { DashboardDataInput } from "../../../../src/components/UI/Dashboard/DashboardBody";
 import { useForm } from "react-hook-form";
+import { RegisterSchema } from "@/libs/schemas";
+import { Form, FormInputText, FormSubmit } from "@/components/UI/Form";
 
-export default function App() {
+export default function Page() {
   const {
     register,
     handleSubmit,
-    formState: { isDirty, dirtyFields },
+    formState: { errors },
     watch,
-  } = useForm({
+  } = useForm <
+  RegisterFormValues >
+  {
+    resolver: zodResolver(RegisterSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      category: "",
-      checkbox: [],
-      radio: "",
+      email: "",
+      bussinessName: "",
+      contactNumber: "",
+      password: "",
+      confirm: "",
     },
-  });
-  const formData = watch();
-
-  const onSubmit = (data) => {
-    console.log(data);
   };
-
+  const formData = watch();
   return (
-    <DashboardBox>
-      <form onSubmit={handleSubmit(onSubmit)} className="text-black">
-        <input {...register("firstName", { required: true })} placeholder="First name" />
-
-        <input {...register("lastName", { minLength: 2 })} placeholder="Last name" />
-
-        <select {...register("category")}>
-          <option value="">Select...</option>
-          <option value="A">Category A</option>
-          <option value="B">Category B</option>
-        </select>
-
-        <input {...register("checkbox")} type="checkbox" value="A" />
-        <input {...register("checkbox")} type="checkbox" value="B" />
-        <input {...register("checkbox")} type="checkbox" value="C" />
-
-        <input {...register("radio")} type="radio" value="A" />
-        <input {...register("radio")} type="radio" value="B" />
-        <input {...register("radio")} type="radio" value="C" />
-
-        <input type="submit" />
-      </form>
-      <pre className="text-black">{JSON.stringify(formData, null, 2)}</pre>
+    <DashboardBox className={"w-full"}>
+      <Form className="w-[45%]">
+        <FormInputText
+          title="Label"
+          register={{ ...register("firstName", { required: true }) }}
+          hidden
+        />
+        <FormInputText title="Label" register={{ ...register("lastName", { required: true }) }} />
+        <FormSubmit>Register</FormSubmit>
+      </Form>
+      {/* <pre>{JSON.stringify(formData)}</pre> */}
     </DashboardBox>
   );
 }
-
-/*
-      <DashboardBox
-        className={
-          "relative grid auto-rows-min grid-cols-1 gap-[15px] bg-grey md:grid-cols-2 xl:grid-cols-3"
-        }
-      >
-        <CardContract className="w-full" />
-        <CardContract className="w-full" />
-        <CardContract className="w-full" />
-        <CardContract className="w-full" />
-      </DashboardBox>
-*/

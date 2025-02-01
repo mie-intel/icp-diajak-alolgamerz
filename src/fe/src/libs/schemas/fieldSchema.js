@@ -31,6 +31,22 @@ export const emailSchema = z
   .min(2, { message: "Email can not be empty!" })
   .email({ message: "Invalid email address!" });
 
+export const phoneSchema = z
+  .string({
+    required_error: "Phone number must be filled!.",
+  })
+  .refine((whatsapp) => /^\+[0-9]{10,15}$/.test(whatsapp), {
+    message: "Phone number must be in a valid format, example: +185123456789",
+  });
+
+export const passwordSchema = z
+  .string({ required_error: "Password must be filled!" })
+  .min(8, { message: "Password must be at least 8 characters long!" })
+  .max(50, { message: "Password must not be more than 50 characters long!" })
+  .refine((password) => /^[A-Za-z0-9]+$/.test(password), {
+    message: "Password must contain only alphanumeric characters (letters and numbers)!",
+  });
+
 export const publicKeySchema = z.string({ required_error: "Public key must be filled!" });
 
 export const boolSchema = z.boolean();
