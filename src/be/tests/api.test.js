@@ -526,4 +526,12 @@ describe("API Testing", ()=>{
             });
         });
     });
+
+    describe("Manual work", ()=>{
+        it("Check JWT expired", async () =>{
+            setTimeout(async ()=>{
+                await expectsError(userAxios[0], "get", "/contracts/", {}, {}, "Session expired", 403);  
+            }, 1000*parseInt(process.env.SESSION_SECONDS_EXPIRE));
+        });
+    });
 });

@@ -41,7 +41,9 @@ export function POSTlogin(req, res) {
         uID: user.uID,
         businessName: user.businessName,
         principal: user.principal
-    }, process.env.JWT_PRIVATE_KEY) });
+    }, process.env.JWT_PRIVATE_KEY, {
+        expiresIn: `${process.env.SESSION_SECONDS_EXPIRE}s`
+    }) });
 }
 
 export function GETid(req, res) {

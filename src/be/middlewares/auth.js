@@ -10,7 +10,11 @@ export default function auth(req, res, next) {
     try {
         results = jwt.verify(req.headers.authorization.split("Bearer ")[1], process.env.JWT_PRIVATE_KEY);
     } catch (err) {
-        res.status(403).json("Invalid session");
+        if(err.message === "jwt expired") {
+            res.status(403).json("Session expired");
+        } else {
+            res.status(403).json("Invalid session");
+        }
         return ;
     }
 
