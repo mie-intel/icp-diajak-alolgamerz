@@ -34,7 +34,7 @@ export function DashboardTitle({ className = "", title = "" }) {
   return (
     <h2
       className={cn(
-        "relative mt-[20px] flex w-full flex-col font-dmSans font-[700] text-darkpurple md:text-[23px] xl:text-[27px]",
+        "relative mt-[20px] flex w-full flex-col font-dmSans text-[16px] font-[700] text-darkpurple md:text-[23px] xl:text-[27px]",
         className,
       )}
     >
@@ -47,7 +47,7 @@ export function DashboardHeading({ className = "", title = "" }) {
   return (
     <h2
       className={cn(
-        "relative mt-[20px] flex w-full flex-col font-dmSans font-[700] text-darkpurple md:text-[20px] xl:text-[24px]",
+        "relative mt-[20px] flex w-full flex-col font-dmSans text-[16px] font-[700] text-darkpurple md:text-[20px] xl:text-[24px]",
         className,
       )}
     >
@@ -60,7 +60,7 @@ export function DashboardSectionTitle({ className = "", title = "" }) {
   return (
     <h3
       className={cn(
-        "relative mt-[20px] flex w-full flex-col font-dmSans font-[500] text-darkpurple md:text-[16px] xl:text-[20px]",
+        "relative mt-[20px] flex w-full flex-col font-dmSans text-[15px] font-[500] text-darkpurple md:text-[16px] xl:text-[20px]",
         className,
       )}
     >
@@ -75,6 +75,8 @@ export function DashboardData({
   isi = "",
   hidden = false,
   verified = false,
+  bold = false,
+  date,
 }) {
   const [showHidden, setShowHidden] = useState(!hidden);
   const handleShowHidden = () => {
@@ -83,11 +85,16 @@ export function DashboardData({
   };
   let hiddenIsi = "*".repeat(isi.length);
   return (
-    <div className={cn("relative mt-[18px] flex w-full flex-col font-dmSans", className)}>
-      <h3 className="font-[700] text-lightpurple md:text-[13px] xl:text-[17px]">{title}</h3>
+    <div
+      className={cn("relative mt-[11px] flex w-full flex-col font-dmSans md:mt-[18px]", className)}
+    >
+      <h3 className="text-[12px] font-[700] text-lightpurple md:text-[13px] xl:text-[17px]">
+        {title}
+      </h3>
       <div
         className={cn(
-          "relative flex w-fit max-w-full flex-row gap-[10px] text-wrap break-all font-dmSansRegular text-black md:text-[14px] xl:text-[18px]",
+          "relative flex w-fit max-w-full flex-row gap-[10px] text-wrap break-all font-dmSansRegular text-[10px] text-black md:text-[14px] xl:text-[18px]",
+          bold && "font-[700] text-darkpurple",
         )}
       >
         {showHidden ? isi : hiddenIsi}
@@ -108,6 +115,11 @@ export function DashboardData({
           <div className="aspect-[1/1] w-[20px] text-[#05CD99] text-lightpurple hover:text-purple">
             <AiFillCheckCircle className="h-full w-full" />
           </div>
+        )}
+        {date && (
+          <p className="self-center text-[8px] text-[#05CD99] text-lightpurple hover:text-purple md:text-[11px] xl:text-[14px]">
+            *DD/MM/YYY
+          </p>
         )}
       </div>
     </div>
