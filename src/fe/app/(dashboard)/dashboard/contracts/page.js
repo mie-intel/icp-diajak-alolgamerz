@@ -1,4 +1,4 @@
-import { ViewMeetingDetail } from "@/modules/dashboard/contracts/index";
+import { ViewMeetingDetail } from "@/modules/dashboard/contracts/";
 
 export default function Page() {
   return (
