@@ -18,3 +18,7 @@ export function DashboardHeader() {
     </div>
   );
 }
+
+export function DashboardFooter() {
+  return <div className="flex w-full justify-end gap-[5px]"></div>;
+}

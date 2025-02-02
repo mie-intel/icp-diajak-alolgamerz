@@ -1,6 +1,6 @@
 "use client";
 
-import { DashboardHeader } from "@/components/UI/Dashboard/DashboardHeader";
+import { DashboardHeader } from "@/components/UI/Dashboard/DashboardSkeleton";
 import { DashboardBox, DashboardSuperTitle } from "@/components/UI/Dashboard/DashboardBody";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { newContractSchema } from "@/libs/schemas/contracts";

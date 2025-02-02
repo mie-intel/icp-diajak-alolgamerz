@@ -2,7 +2,7 @@
 
 import { DashboardBox } from "@/components/UI/Dashboard/DashboardBody";
 import { CardContract } from "@/components/UI/Card/CardContract";
-import { DashboardHeader } from "@/components/UI/Dashboard/DashboardHeader";
+import { DashboardHeader } from "@/components/UI/Dashboard/DashboardSkeleton";
 import { cn } from "@/libs/utils";
 import { useState } from "react";
 
