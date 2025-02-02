@@ -72,7 +72,7 @@ export function ViewDocumentDetail({
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dapibus vulputate justo commodo ultrices. Proin fringilla enim est. Suspendisse tincidunt ut lacus vel convallis.",
     src: null,
-    status: "accepted",
+    status: "declined",
   },
   contractItem = [
     {
@@ -115,10 +115,12 @@ export function ViewDocumentDetail({
       />
       <DashboardData title="Date Created" isi={contract.date} date />
       <DashboardData title="Parties Involved" isi={partiesList} bold />
-      <div className="mt-[3px] flex w-full justify-end gap-[8px] md:gap-[15px] lg:gap-[18px]">
-        <ButtonCommit action={"accept"} />
-        <ButtonCommit action={"decline"} />
-      </div>
+      {contract.status === "pending" && (
+        <div className="mt-[3px] flex w-full justify-end gap-[8px] md:gap-[15px] lg:gap-[18px]">
+          <ButtonCommit action={"accept"} />
+          <ButtonCommit action={"decline"} />
+        </div>
+      )}
       <DashboardBox className="relative mt-[11px] h-full bg-[#E3E3E3] !p-0 md:mt-[18px]">
         {contract.src && <iframe src="" className="h-full w-full" />}
       </DashboardBox>

@@ -28,7 +28,7 @@ export default function Sidebar() {
   const curPath = usePathname();
 
   return (
-    <div className="relative flex min-h-screen w-[18%] flex-col items-end gap-[20px] bg-white font-dmSans text-blackpurple">
+    <div className="relative flex min-h-screen w-[18%] flex-col items-end gap-[20px] bg-white font-dmSans text-blackpurple max-lg:hidden">
       {/* Head */}
       <div className="flex aspect-[270/130] w-full items-center justify-center gap-[2px] text-[9px] md:text-[15px] lg:text-[20px] 2xl:text-[25px]">
         <h1>Arya</h1>

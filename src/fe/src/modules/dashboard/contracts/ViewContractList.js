@@ -27,7 +27,7 @@ const contractList = [
   },
 ];
 
-export default function Contracts() {
+export function ViewContractList() {
   const options = ["all", "success", "pending", "invalid"];
   const [status, setStatus] = useState("all");
   const filteredContracts = contractList.filter(

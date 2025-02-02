@@ -8,7 +8,7 @@ export function DashboardBox({ className = "", children = null }) {
   return (
     <div
       className={cn(
-        "h-full w-full bg-white p-[7px] md:rounded-lg md:p-[15px] lg:rounded-2xl lg:p-[20px] 2xl:p-[25px]",
+        "h-[90dvh] w-full bg-white p-[7px] md:rounded-lg md:p-[15px] lg:h-full lg:rounded-2xl lg:p-[20px] 2xl:p-[25px]",
         className,
       )}
     >
@@ -124,4 +124,12 @@ export function DashboardData({
       </div>
     </div>
   );
+}
+
+export function LineHorizontal({ className }) {
+  return <div className={cn("mt-[20px] h-[0.5px] w-full bg-lightpurple", className)} />;
+}
+
+export function LineVertical({ className }) {
+  return <div className={cn("mx-[5px] h-full w-[0.5px] bg-lightpurple", className)} />;
 }

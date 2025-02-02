@@ -58,7 +58,7 @@ export function TableCell({ className, bold, ...props }) {
   return (
     <td
       className={cn(
-        "text-muted-foreground mt-0 break-words pt-[12px] text-[10px] leading-tight text-darkpurple max-md:px-[5px] md:text-sm lg:mt-[8px] lg:max-w-[200px] lg:text-[14px]",
+        "text-muted-foreground mt-0 break-words pt-[12px] text-[10px] leading-tight text-darkpurple max-md:px-[10px] md:px-[12px] md:text-sm lg:mt-[8px] lg:max-w-[200px] lg:text-[14px]",
         className,
         bold && "font-[700]",
       )}

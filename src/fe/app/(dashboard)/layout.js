@@ -2,6 +2,7 @@ import AuthLayout from "@/components/layout/AuthLayout";
 import "../globals.css";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import Sidebar from "@/components/UI/Sidebar";
+import Footbar from "@/components/UI/FootBar";
 
 export const metadata = {
   title: "Diajak Alolgamerz Web3",
@@ -11,9 +12,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="flex antialiased">
+      <body className="flex flex-col antialiased lg:flex-row">
         <Sidebar />
-        <DashboardLayout>{children}</DashboardLayout>
+        <DashboardLayout className="flex flex-col justify-between">
+          {children} <Footbar />
+        </DashboardLayout>
       </body>
     </html>
   );
