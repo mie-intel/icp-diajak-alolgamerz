@@ -1,24 +1,90 @@
 //index.js
 const io = require('socket.io-client')
 const mediasoupClient = require('mediasoup-client')
+const VideoStreamMerger = require('video-stream-merger');
 
-const roomName = window.location.pathname.split('/')[2]
+const roomName = window.location.pathname.split('/')[1]
+console.log(window.location.pathname.split('/'));
 
 const socket = io("/mediasoup")
 
-socket.on('connection-success', ({ socketId }) => {
+socket.on('connectionSuccess', ({ socketId }) => {
   console.log(socketId)
   getLocalStream()
 })
 
-let device
-let rtpCapabilities
-let producerTransport
-let consumerTransports = []
-let audioProducer
-let videoProducer
-let consumer
-let isProducer = false
+let device;
+let rtpCapabilities;
+let producerTransport;
+let consumerTransports = [];
+let audioProducer;
+let videoProducer;
+let merger;
+
+let audioStreams = [];
+let videoStreams = [];
+
+const DIMENSION = 
+[ // 1 person
+  { // 16:9
+    x: 0,
+    y: 0,
+    width: 1920,
+    height: 1080,
+  },
+  { // 4:3
+    x: 240,
+    y: 0,
+    width: 1440,
+    height: 1080,
+  },
+  { // 1:1
+    x: 420,
+    y: 0,
+    width: 1080,
+    height: 1080,
+  },
+  { // 3:4
+    x: 555,
+    y: 0,
+    width: 810,
+    height: 1080,
+  },
+  { // 9:16
+    x: 656.25,
+    y: 0,
+    width: 607.5,
+    height: 1080,
+  }
+];
+
+const LAYOUT = [
+  { // 1
+    lx: 0,
+    ly: 0,
+    col: 1,
+  },
+  { // 2
+    lx: 0,
+    ly: 270,
+    col: 2,
+  },
+  { // 3-4
+    lx: 0,
+    ly: 0,
+    col: 2,
+  },
+  { // 5-6
+    lx: 0,
+    ly: 180,
+    col: 3,
+  },
+  { // 7-9
+    lx: 0,
+    ly: 0,
+    col: 3,
+  }
+]
 
 // https://mediasoup.org/documentation/v3/mediasoup-client/api/#ProducerOptions
 // https://mediasoup.org/documentation/v3/mediasoup-client/api/#transport-produce
@@ -51,8 +117,54 @@ let audioParams;
 let videoParams = { params };
 let consumingTransports = [];
 
+
+const updateMediaDevices = async () => {
+  const mediaDevices = await navigator.mediaDevices.enumerateDevices();
+  const videoInputs = mediaDevices.filter(device => device.kind === 'videoinput');
+  const audioInputs = mediaDevices.filter(device => device.kind === 'audioinput');
+  const audioOutputs = mediaDevices.filter(device => device.kind === 'audiooutput');
+
+  videoInputs.forEach((device) => {
+    const option = document.createElement('option');
+    option.value = device.deviceId;
+    option.text = device.label || `Camera ${videoSelect.length + 1}`;
+    videoSelect.appendChild(option);
+  });
+  audioInputs.forEach((device) => {
+    const option = document.createElement('option');
+    option.value = device.deviceId;
+    option.text = device.label || `Microphone ${videoSelect.length + 1}`;
+    audioInputSelect.appendChild(option);
+  });
+}
+
 const streamSuccess = (stream) => {
+  updateMediaDevices();
   localVideo.srcObject = stream
+
+  merger = new VideoStreamMerger.VideoStreamMerger({
+    width: 1920,   // Width of the output video
+    height: 1080,  // Height of the output video
+    fps: 30,       // Video capture frames per second
+    clearRect: true, // Clear the canvas every frame
+    audioContext: null, // Supply an external AudioContext (for audio effects)
+  });
+
+  
+  videoStreams.push({ stream, id: 'local' });
+  updateMerge();
+  
+  merger.start();
+  mergerVideo.srcObject = merger.result;
+
+  const mediaRecorder = new MediaRecorder(merger.result, { mimeType: "video/webm" });
+  mediaRecorder.ondataavailable = event => {
+    if(event.data.size > 0){
+      // socket.emit('stream', event.data);
+    }
+  };
+
+  mediaRecorder.start(100);
 
   audioParams = { track: stream.getAudioTracks()[0], ...audioParams };
   videoParams = { track: stream.getVideoTracks()[0], ...videoParams };
@@ -60,9 +172,72 @@ const streamSuccess = (stream) => {
   joinRoom()
 }
 
+const updateMerge = () => {
+  return;
+  videoStreams.forEach(data => {
+    merger.removeStream(data.stream);
+  });
+  audioStreams.forEach(data => {
+    merger.removeStream(data.stream);
+  });
+
+  audioStreams.forEach(data => merger.addStream(data.stream));
+  
+  let sizeIndex, layoutIndex;
+  if(videoStreams.length <= 1){
+    sizeIndex = 1;
+    layoutIndex = 0;
+  }
+  else if(videoStreams.length <= 2){
+    sizeIndex = 2;
+    layoutIndex = 1;
+  }
+  else if(videoStreams.length <= 4){
+    sizeIndex = 2;
+    layoutIndex = 2;
+  }
+  else if(videoStreams.length <= 6){
+    sizeIndex = 3;
+    layoutIndex = 3;
+  }
+  else if(videoStreams.length <= 9){
+    sizeIndex = 3;
+    layoutIndex = 4;
+  }
+  else{
+    alert("Currently cannot support meet with size >9");
+    return;
+  }
+
+  const { lx, ly, col } = LAYOUT[layoutIndex];
+  videoStreams.forEach((data, index) => {
+    let { width, height } = data.stream.getVideoTracks()[0].getSettings(); // problematik!!!
+    let x, y;
+    const cd = DIMENSION.find(d => {
+      // console.log("test", width, d.height, height, d.width);
+      return width * d.height === height * d.width;
+    }); // find matching aspect ratio
+    if(cd){
+      ({ x, y, width, height } = cd);
+    }
+    else{
+      x = 0, y = 0, width = 1920, height = 1080;
+    }
+    x /= sizeIndex; y /= sizeIndex; width /= sizeIndex; height /= sizeIndex;
+    // console.log({ x, y, index, width, height, lx, ly, col });
+    merger.addStream(data.stream, {
+      width,
+      height,
+      x: (index % col) * 1920/sizeIndex + lx + x,
+      y: (Math.floor(index / col)) * 1080/sizeIndex + ly + y,
+    });
+  })
+}
+
 const joinRoom = () => {
   socket.emit('joinRoom', { roomName }, (data) => {
     console.log(`Router RTP Capabilities... ${data.rtpCapabilities}`)
+
     // we assign to local variable and will be used when
     // loading the client Device (see createDevice above)
     rtpCapabilities = data.rtpCapabilities
@@ -78,17 +253,20 @@ const getLocalStream = () => {
     video: {
       width: {
         min: 640,
+        // ideal: 1280,
         max: 1920,
       },
       height: {
         min: 400,
+        // ideal: 720,
         max: 1080,
-      }
+      },
+      deviceId: null
     }
   })
   .then(streamSuccess)
   .catch(error => {
-    console.log(error.message)
+    console.log({ error })
   })
 }
 
@@ -264,7 +442,7 @@ const signalNewConsumerTransport = async (remoteProducerId) => {
 }
 
 // server informs the client of a new producer just joined
-socket.on('new-producer', ({ producerId }) => signalNewConsumerTransport(producerId))
+socket.on('newProducer', ({ producerId }) => signalNewConsumerTransport(producerId))
 
 const getProducers = () => {
   socket.emit('getProducers', producerIds => {
@@ -289,7 +467,7 @@ const connectRecvTransport = async (consumerTransport, remoteProducerId, serverC
       return
     }
 
-    console.log(`Consumer Params ${params}`)
+    console.log(`Consumer Params`, params);
     // then consume with the local consumer transport
     // which creates a consumer
     const consumer = await consumerTransport.consume({
@@ -313,21 +491,29 @@ const connectRecvTransport = async (consumerTransport, remoteProducerId, serverC
     const newElem = document.createElement('div')
     newElem.setAttribute('id', `td-${remoteProducerId}`)
 
+    // destructure and retrieve the video track from the producer
+    const { track } = consumer;
+    const stream = new MediaStream([ track ]);
+    console.log(`Received media ${remoteProducerId}: `, track);
+
     if (params.kind == 'audio') {
       //append to the audio container
-      newElem.innerHTML = '<audio id="' + remoteProducerId + '" autoplay></audio>'
+      newElem.innerHTML = '<audio id="' + remoteProducerId + '" autoplay></audio>';
+
+      audioStreams = [...audioStreams, { stream, id: remoteProducerId }];
     } else {
       //append to the video container
-      newElem.setAttribute('class', 'remoteVideo')
-      newElem.innerHTML = '<video id="' + remoteProducerId + '" autoplay class="video" ></video>'
+      newElem.setAttribute('class', 'remoteVideo');
+      newElem.innerHTML = '<video id="' + remoteProducerId + '" autoplay class="video" ></video>';
+      videoStreams = [...videoStreams, { stream, id: remoteProducerId }];
     }
 
-    videoContainer.appendChild(newElem)
-
-    // destructure and retrieve the video track from the producer
-    const { track } = consumer
-
-    document.getElementById(remoteProducerId).srcObject = new MediaStream([track])
+    videoContainer.appendChild(newElem);
+    updateMerge();
+    
+    document.getElementById(remoteProducerId).srcObject = stream;
+    document.getElementById(remoteProducerId).onplay = () => console.log('remote video playing!', remoteProducerId);
+    console.log(newElem);
 
     // the server consumer started with media paused
     // so we need to inform the server to resume
@@ -335,7 +521,7 @@ const connectRecvTransport = async (consumerTransport, remoteProducerId, serverC
   })
 }
 
-socket.on('producer-closed', ({ remoteProducerId }) => {
+socket.on('producerClosed', ({ remoteProducerId }) => {
   // server notification is received when a producer is closed
   // we need to close the client-side consumer and associated transport
   const producerToClose = consumerTransports.find(transportData => transportData.producerId === remoteProducerId)
@@ -346,5 +532,9 @@ socket.on('producer-closed', ({ remoteProducerId }) => {
   consumerTransports = consumerTransports.filter(transportData => transportData.producerId !== remoteProducerId)
 
   // remove the video div element
-  videoContainer.removeChild(document.getElementById(`td-${remoteProducerId}`))
-})
+  videoContainer.removeChild(document.getElementById(`td-${remoteProducerId}`));
+  audioStreams = audioStreams.filter(data => data.id !== remoteProducerId);
+  videoStreams = videoStreams.filter(data => data.id !== remoteProducerId);
+
+  updateMerge();
+});

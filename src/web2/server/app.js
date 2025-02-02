@@ -10,14 +10,13 @@ import { Server } from 'socket.io';
 import mediasoup from 'mediasoup';
 
 app.get('*', (req, res, next) => {
-  const path = '/sfu/';
   
-  if(req.path.indexOf(path) === 0 && req.path.length > path.length) return next();
+  if(req.path.length > 1) return next();
   
   res.send('You need to specify a room name in the path!');
 });
 
-app.use('/sfu/:room', express.static(path.join(__dirname, 'public')));
+app.use('/:room', express.static(path.join(__dirname, 'public')));
 
 // SSL cert for HTTPS access
 const options = {
@@ -34,6 +33,12 @@ const io = new Server(httpsServer);
 
 const connections = io.of('mediasoup');
 
+// temporary video storage
+const tempFolder = path.join(__dirname, "video");
+if (!fs.existsSync(tempFolder)) {
+  fs.mkdirSync(tempFolder);
+}
+
 /**
 * Worker
 * |-> Router(s)
@@ -44,11 +49,13 @@ const connections = io.of('mediasoup');
 **/
 
 let worker
-let rooms = {}          // { roomName1: { Router, rooms: [ socketId1, ... ] }, ...}
+let rooms = {}          // { roomName1: { Router, rooms: [ socketId1, ... ], merger, ffmpegStream }, ...}
 let peers = {}          // { socketId1: { roomName1, socket, transports = [id1, id2,] }, producers = [id1, id2,] }, consumers = [id1, id2,], peerDetails }, ...}
 let transports = []     // [ { socketId1, roomName1, transport, consumer }, ... ]
 let producers = []      // [ { socketId1, roomName1, producer, }, ... ]
 let consumers = []      // [ { socketId1, roomName1, consumer, }, ... ]
+
+let recordingTransports = [] // [ { socketId1, roomName1, transport } ]
 
 const createWorker = async () => {
   worker = await mediasoup.createWorker({
@@ -84,8 +91,10 @@ const mediaCodecs = [
 ];
 
 connections.on('connection', async socket => {
+  const streamData = [];
+
   console.log(`[Socket] connected ${socket.id}`);
-  socket.emit('connection-success', {
+  socket.emit('connectionSuccess', {
     socketId: socket.id,
   });
   
@@ -100,12 +109,17 @@ connections.on('connection', async socket => {
     return items.filter(item => item.socketId !== socket.id);
   }
 
+  socket.on('stream', data => {
+    streamData.push(Buffer.from(data));
+  })
+
   socket.on('disconnect', () => {
     // cleanup
-    console.log(`[Socket] connected ${socket.id}`);
+    console.log(`[Socket] disconnected ${socket.id}`);
     consumers = removeItems(consumers, 'consumer');
     producers = removeItems(producers, 'producer');
     transports = removeItems(transports, 'transport');
+    recordingTransports = removeItems(recordingTransports, 'transport');
 
     if(!peers[socket.id]) return;
     const { roomName } = peers[socket.id];
@@ -115,6 +129,23 @@ connections.on('connection', async socket => {
     if(rooms[roomName].peers.length === 0){
       closeRoom(roomName);
     }
+
+    if (streamData.length === 0) {
+      return;
+    }
+
+    const videoBuffer = Buffer.concat(streamData);
+
+    const fileName = `video-${Date.now()}.mp4`;
+    const filePath = path.join(tempFolder, fileName);
+
+    fs.writeFile(filePath, videoBuffer, (err) => {
+      if (err) {
+        console.error("[Error] saving file:", err);
+        return;
+      }
+      console.log("[Record] Video saved: ", fileName);
+    });
   });
 
   socket.on('joinRoom', async ({ roomName }, callback) => {
@@ -197,7 +228,7 @@ connections.on('connection', async socket => {
     ).map(
       producerData => peers[producerData.socketId].socket
     ).forEach(
-      roomPeerSocket => roomPeerSocket.emit('new-producer', { producerId: id })
+      roomPeerSocket => roomPeerSocket.emit('newProducer', { producerId: id })
     );
   }
 
@@ -303,7 +334,7 @@ connections.on('connection', async socket => {
 
       consumer.on('producerclose', () => {
         console.log(`[Consumer] producer closed`);
-        socket.emit('producer-closed', { remoteProducerId });
+        socket.emit('producerClosed', { remoteProducerId });
 
         consumerTransport.close([]);
         transports = transports.filter(
@@ -347,9 +378,11 @@ connections.on('connection', async socket => {
 const createRoom = async (roomName) => {
   const router = await worker.createRouter({ mediaCodecs });
   console.log(`[Router] created ${router.id} for room ${roomName}`);
-  rooms[roomName] = { router, peers: [] }; 
+  rooms[roomName] = { router, peers: [] };
 }
 
-const closeRoom = () => {
-
+const closeRoom = (roomName) => {
+  console.log(`[Router] destroyed ${rooms[roomName].router.id} for room ${roomName}`);
+  rooms[roomName].router.close();
+  delete rooms[roomName];
 }

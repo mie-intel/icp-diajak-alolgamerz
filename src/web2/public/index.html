@@ -50,10 +50,17 @@
                 width: 240px;
             }
         }
+
+        .preview{
+            width: 80vw;
+            height: 45vw;
+        }
     </style>
   </head>
   <body>
     <body>
+        <select id="videoSelect"></select>
+        <select id="audioInputSelect"></select>
         <div id="video">
             <table class="mainTable">
                 <tbody>
@@ -67,16 +74,8 @@
                     </tr>
                 </tbody>
             </table>
-            <table>
-                <tbody>
-                    <tr>
-                        <td>
-                            
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
+        <video id="mergerVideo" autoplay class="preview" muted ></video>
     </body>
   </body>
   <footer>
