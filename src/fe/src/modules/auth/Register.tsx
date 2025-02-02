@@ -1,6 +1,6 @@
 "use client";
 
-import { DashboardBox } from "@/components/UI/Dashboard/DashboardBody";
+import { DashboardBox, DashboardTitle } from "@/components/UI/Dashboard/DashboardBody";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "@/libs/schemas/auth";
@@ -32,7 +32,14 @@ export default function RegisterPage() {
 
   return (
     <DashboardBox className="flex items-center justify-center">
-      <Form className="w-[56%]" onSubmit={handleSubmit(onSubmit)}>
+      <Form
+        className="w-[80%] md:w-[70%] lg:w-[80%] xl:w-[70%] 2xl:w-[58%]"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <DashboardTitle
+          title="Create an Account"
+          className="w-full text-center text-[20px] font-normal text-black md:mb-[7px] md:text-[30px] lg:mb-[20px] lg:text-left lg:!text-[34px] 2xl:!text-[37px]"
+        />
         <FormInputText
           placeholder="example@gmail.com"
           title="Email"

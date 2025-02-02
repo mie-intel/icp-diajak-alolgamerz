@@ -36,7 +36,7 @@ export default function Sidebar() {
         <h2>Apo</h2>
       </div>
       {/* Path 3 tempat */}
-      <div className="flex h-auto min-h-fit w-full flex-col">
+      <div className="flex h-auto w-full flex-col">
         {path.map((item) => {
           return (
             <Link
@@ -63,7 +63,6 @@ export default function Sidebar() {
         })}
       </div>
       {/* New Contract */}
-
       <div className="flex w-full items-center justify-center">
         <button
           type="button"

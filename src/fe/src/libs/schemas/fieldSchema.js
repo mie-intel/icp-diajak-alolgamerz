@@ -47,7 +47,17 @@ export const passwordSchema = z
     message: "Password must contain only alphanumeric characters (letters and numbers)!",
   });
 
+export const descriptionSchema = z
+  .string({ required_error: "Description must be filled!" })
+  .min(20, { message: "Description: must be at least 20 characters long!" })
+  .max(200, { message: "Password must not be more than 200 characters long!" })
+  .refine((password) => /^[A-Za-z0-9]+$/.test(password), {
+    message: "Description must contain only alphanumeric characters (letters and numbers)!",
+  });
+
 export const publicKeySchema = z.string({ required_error: "Public key must be filled!" });
+
+export const partiesListSchema = z.string({ required_error: "Parties must be filled!" });
 
 export const boolSchema = z.boolean();
 

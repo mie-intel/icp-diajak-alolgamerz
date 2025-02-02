@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { cn } from "@/libs/utils";
+import "./form.css";
 
 export function Form({ className = "", ...props }) {
   return <form className={cn("flex w-full flex-col bg-inherit", className)} {...props} />;
@@ -10,7 +11,7 @@ export function Form({ className = "", ...props }) {
 
 export function FormInputText({
   className = "",
-  title,
+  title = "",
   placeholder = "",
   hidden = false,
   error = null,
@@ -36,14 +37,14 @@ export function FormInputText({
         {title && <h3 className="text-[10px] text-black md:text-[13px] xl:text-[17px]">{title}</h3>}
         <div
           className={cn(
-            "relative mt-[5px] flex w-full flex-row items-center overflow-clip rounded-lg bg-grey pr-[7px] md:mt-[8px] md:rounded-xl md:pr-[13px] lg:mt-[11px] xl:rounded-2xl xl:pr-[18px] 2xl:rounded-3xl",
+            "relative mt-[5px] flex w-full flex-row items-center overflow-clip rounded-2xl bg-grey pr-[7px] md:mt-[8px] md:pr-[13px] lg:mt-[11px] xl:pr-[18px] 2xl:rounded-3xl",
           )}
         >
           <input
             {...register}
             type={hidden && !showHidden ? "password" : "text"}
             placeholder={placeholder}
-            className="] relative h-full w-full bg-inherit p-[7px] font-dmSansRegular text-[10px] text-black outline-0 md:p-[13px] md:text-[14px] xl:p-[18px] xl:text-[18px]"
+            className="relative h-full w-full bg-inherit p-[13px] font-dmSansRegular text-[10px] text-black outline-0 max-md:px-[16px] md:p-[18px] md:text-[14px] xl:text-[18px]"
           />
           {isClient && hidden && (
             <button
@@ -65,13 +66,114 @@ export function FormInputText({
   );
 }
 
-export function FormSubmit({ className = "", children = "Submit", ...props }) {
+export function FormTextArea({
+  className = "",
+  title = "",
+  placeholder = "",
+  rows = 5,
+  error = null,
+  register,
+}) {
+  return (
+    <>
+      <div
+        className={cn(
+          "relative mt-[10px] flex w-full flex-col font-dmSans md:mt-[18px]",
+          className,
+        )}
+      >
+        {title && <h3 className="text-[10px] text-black md:text-[13px] xl:text-[17px]">{title}</h3>}
+        <div
+          className={cn(
+            "relative mt-[5px] flex w-full flex-row items-center overflow-clip rounded-2xl bg-grey pr-[7px] md:mt-[8px] md:pr-[13px] lg:mt-[11px] xl:pr-[18px] 2xl:rounded-3xl",
+          )}
+        >
+          <textarea
+            {...register}
+            placeholder={placeholder}
+            rows={rows}
+            className="relative h-full w-full bg-inherit p-[13px] font-dmSansRegular text-[10px] text-black outline-0 max-md:px-[16px] md:p-[18px] md:text-[14px] xl:text-[18px]"
+          />
+        </div>
+      </div>
+      {error && <p className="text-red-500">{error.message}</p>}
+    </>
+  );
+}
+
+export function FormSelect({
+  className = "",
+  title = "",
+  placeholder = "",
+  options = ["Arya1", "Arya2", "Arya3"],
+  multiple = false,
+  error = null,
+  ...props
+}) {
+  return (
+    <>
+      <div
+        className={cn(
+          "relative mt-[10px] flex w-full flex-col font-dmSans md:mt-[18px]",
+          className,
+        )}
+      >
+        {title && <h3 className="text-[10px] text-black md:text-[13px] xl:text-[17px]">{title}</h3>}
+        <div
+          className={cn(
+            "relative mt-[5px] flex w-full flex-row items-center overflow-clip rounded-2xl bg-grey pr-[7px] md:mt-[8px] md:pr-[13px] lg:mt-[11px] 2xl:rounded-3xl",
+          )}
+        >
+          <select
+            // {...register}
+            multiple
+            placeholder={placeholder}
+            className="relative flex h-full w-full justify-center bg-inherit p-[13px] font-dmSansRegular text-[10px] text-black outline-0 md:p-[18px] md:text-[14px] xl:pr-[18px] xl:text-[18px]"
+          >
+            {options.map((item) => {
+              return (
+                <>
+                  <option
+                    key={item}
+                    value={item}
+                    className="relative h-fit w-full bg-inherit font-dmSansRegular text-[10px] text-black outline-0 max-md:px-[16px] md:text-[14px] xl:text-[18px]"
+                  >
+                    {item}
+                  </option>
+                </>
+              );
+            })}
+          </select>
+          {/* {isClient && hidden && (
+            <button
+              type="button"
+              onClick={handleShowHidden}
+              className="aspect-[1/1] w-[25px] text-lightpurple hover:text-purple"
+            >
+              {showHidden ? (
+                <AiFillEye className="h-full w-full" />
+              ) : (
+                <AiFillEyeInvisible className="h-full w-full" />
+              )}
+            </button>
+          )} */}
+        </div>
+      </div>
+      {error && <p className="text-red-500">{error.message}</p>}
+    </>
+  );
+}
+
+export function FormSubmit({ className = "", children = "Submit", outline = false, ...props }) {
   return (
     <>
       <button
         type="submit"
         className={cn(
-          "relative mt-[26px] flex w-full items-center justify-center rounded-lg bg-darkpurple p-[7px] text-[10px] font-[700] duration-300 hover:bg-lightpurple md:mt-[37px] md:rounded-xl md:p-[13px] md:text-[14px] lg:mt-[44px] xl:rounded-2xl xl:p-[18px] xl:text-[18px] 2xl:rounded-3xl",
+          "relative mt-[26px] flex w-full items-center justify-center rounded-2xl p-[13px] text-[10px] font-[700] duration-300 md:mt-[37px] md:p-[18px] md:text-[14px] lg:mt-[44px] xl:text-[18px] 2xl:rounded-3xl",
+          outline
+            ? "border-[1px] border-darkpurple bg-white text-darkpurple hover:border-white hover:bg-lightpurple hover:text-white md:border-[2px]"
+            : "bg-darkpurple text-white hover:bg-lightpurple",
           className,
         )}
         children={children}

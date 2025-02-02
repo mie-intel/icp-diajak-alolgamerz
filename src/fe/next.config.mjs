@@ -6,7 +6,7 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-
+  reactStrictMode: false,
   images: {
     loader: "custom",
     // path: "http://localhost:3000/2024/porsenigama",

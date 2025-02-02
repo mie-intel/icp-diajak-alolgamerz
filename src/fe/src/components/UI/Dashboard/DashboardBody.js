@@ -4,7 +4,7 @@ import { cn } from "@/libs/utils";
 import { useState, useEffect } from "react";
 import { AiFillCheckCircle, AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
-export function DashboardBox({ children, className }) {
+export function DashboardBox({ className = "", children = null }) {
   return (
     <div
       className={cn(
@@ -17,46 +17,67 @@ export function DashboardBox({ children, className }) {
   );
 }
 
-export function DashboardTitle({ className, title }) {
+export function DashboardSuperTitle({ className = "", title = "" }) {
   return (
-    <div
+    <h2
       className={cn(
-        "relative mt-[20px] flex w-full flex-col font-dmSans font-[700] text-darkpurple",
+        "relative mt-[20px] flex w-full flex-col text-left font-dmSans text-[20px] font-normal text-black md:mb-[7px] md:text-[30px] lg:mb-[20px] lg:text-left lg:text-[34px] 2xl:text-[37px]",
         className,
       )}
     >
-      <h2 className="md:text-[23px] xl:text-[27px]">{title}</h2>
-    </div>
+      {title}
+    </h2>
   );
 }
 
-export function DashboardHeading({ className, title }) {
+export function DashboardTitle({ className = "", title = "" }) {
   return (
-    <div
+    <h2
       className={cn(
-        "relative mt-[20px] flex w-full flex-col font-dmSans font-[700] text-darkpurple",
+        "relative mt-[20px] flex w-full flex-col font-dmSans text-[16px] font-[700] text-darkpurple md:text-[23px] xl:text-[27px]",
         className,
       )}
     >
-      <h2 className="md:text-[20px] xl:text-[24px]">{title}</h2>
-    </div>
+      {title}
+    </h2>
   );
 }
 
-export function DashboardSectionTitle({ className, title }) {
+export function DashboardHeading({ className = "", title = "" }) {
   return (
-    <div
+    <h2
       className={cn(
-        "relative mt-[20px] flex w-full flex-col font-dmSans font-[500] text-darkpurple",
+        "relative mt-[20px] flex w-full flex-col font-dmSans text-[16px] font-[700] text-darkpurple md:text-[20px] xl:text-[24px]",
         className,
       )}
     >
-      <h2 className="md:text-[16px] xl:text-[20px]">{title}</h2>
-    </div>
+      {title}
+    </h2>
   );
 }
 
-export function DashboardData({ className, title, isi, hidden = false, verified = false }) {
+export function DashboardSectionTitle({ className = "", title = "" }) {
+  return (
+    <h3
+      className={cn(
+        "relative mt-[20px] flex w-full flex-col font-dmSans text-[15px] font-[500] text-darkpurple md:text-[16px] xl:text-[20px]",
+        className,
+      )}
+    >
+      {title}
+    </h3>
+  );
+}
+
+export function DashboardData({
+  className = "",
+  title = "",
+  isi = "",
+  hidden = false,
+  verified = false,
+  bold = false,
+  date,
+}) {
   const [showHidden, setShowHidden] = useState(!hidden);
   const handleShowHidden = () => {
     if (!hidden) return;
@@ -64,11 +85,16 @@ export function DashboardData({ className, title, isi, hidden = false, verified 
   };
   let hiddenIsi = "*".repeat(isi.length);
   return (
-    <div className={cn("relative mt-[18px] flex w-full flex-col font-dmSans", className)}>
-      <h3 className="font-[700] text-lightpurple md:text-[13px] xl:text-[17px]">{title}</h3>
+    <div
+      className={cn("relative mt-[11px] flex w-full flex-col font-dmSans md:mt-[18px]", className)}
+    >
+      <h3 className="text-[12px] font-[700] text-lightpurple md:text-[13px] xl:text-[17px]">
+        {title}
+      </h3>
       <div
         className={cn(
-          "relative flex w-fit max-w-full flex-row gap-[10px] text-wrap break-all font-dmSansRegular text-black md:text-[14px] xl:text-[18px]",
+          "relative flex w-fit max-w-full flex-row gap-[10px] text-wrap break-all font-dmSansRegular text-[10px] text-black md:text-[14px] xl:text-[18px]",
+          bold && "font-[700] text-darkpurple",
         )}
       >
         {showHidden ? isi : hiddenIsi}
@@ -89,6 +115,11 @@ export function DashboardData({ className, title, isi, hidden = false, verified 
           <div className="aspect-[1/1] w-[20px] text-[#05CD99] text-lightpurple hover:text-purple">
             <AiFillCheckCircle className="h-full w-full" />
           </div>
+        )}
+        {date && (
+          <p className="self-center text-[8px] text-[#05CD99] text-lightpurple hover:text-purple md:text-[11px] xl:text-[14px]">
+            *DD/MM/YYY
+          </p>
         )}
       </div>
     </div>
