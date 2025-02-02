@@ -19,7 +19,7 @@ export function TableRow({ className, ...props }) {
   return (
     <tr
       className={cn(
-        "hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors",
+        "hover:bg-muted/50 data-[state=selected]:bg-muted transition-colors",
         className,
       )}
       {...props}
@@ -31,7 +31,7 @@ export function TableHead({ className, children, ...props }) {
   return (
     <th
       className={cn(
-        "text-muted-foreground h-7 text-nowrap break-words text-left align-middle text-sm font-medium text-lightpurple lg:max-w-[300px] lg:text-[14px] [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+        "text-muted-foreground h-7 text-nowrap break-words text-left align-middle text-xs font-medium text-lightpurple max-md:pr-[5px] lg:max-w-[300px] lg:text-[14px] xl:text-[15px] [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
         className,
       )}
       {...props}
@@ -58,7 +58,7 @@ export function TableCell({ className, bold, ...props }) {
   return (
     <td
       className={cn(
-        "text-muted-foreground mt-0 break-words pt-[12px] text-[10px] leading-tight md:text-sm lg:mt-[8px] lg:max-w-[200px] lg:text-[14px]",
+        "text-muted-foreground mt-0 break-words pt-[12px] text-[10px] leading-tight text-darkpurple max-md:px-[5px] md:text-sm lg:mt-[8px] lg:max-w-[200px] lg:text-[14px]",
         className,
         bold && "font-[700]",
       )}
