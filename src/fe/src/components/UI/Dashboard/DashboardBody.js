@@ -112,8 +112,8 @@ export function DashboardData({
           </button>
         )}
         {verified && !hidden && (
-          <div className="aspect-[1/1] w-[20px] text-[#05CD99] text-lightpurple hover:text-purple">
-            <AiFillCheckCircle className="h-full w-full" />
+          <div className="aspect-[1/1] w-[20px] text-lightpurple hover:text-purple">
+            <AiFillCheckCircle className="h-full w-full text-[#05CD99]" />
           </div>
         )}
         {date && (
@@ -131,5 +131,5 @@ export function LineHorizontal({ className }) {
 }
 
 export function LineVertical({ className }) {
-  return <div className={cn("mx-[5px] h-full w-[0.5px] bg-lightpurple", className)} />;
+  return <div className={cn("mx-[5px] h-[100px] w-[0.5px] bg-lightpurple", className)} />;
 }

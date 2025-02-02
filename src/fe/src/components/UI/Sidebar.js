@@ -5,6 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MdFileCopy, MdHome, MdPerson } from "react-icons/md";
 import { AiFillPlusCircle } from "react-icons/ai";
+import Image from "next/image";
+import { LineHorizontal } from "./Dashboard/DashboardBody";
 
 export default function Sidebar() {
   const path = [
@@ -30,10 +32,10 @@ export default function Sidebar() {
   return (
     <div className="relative flex min-h-screen w-[18%] flex-col items-end gap-[20px] bg-white font-dmSans text-blackpurple max-lg:hidden">
       {/* Head */}
-      <div className="flex aspect-[270/130] w-full items-center justify-center gap-[2px] text-[9px] md:text-[15px] lg:text-[20px] 2xl:text-[25px]">
-        <h1>Arya</h1>
-        <p>|</p>
-        <h2>Apo</h2>
+      <div className="relative flex aspect-[270/130] w-full items-center justify-center">
+        <div className="absolute bottom-0 left-0 right-0 top-0 m-auto aspect-[130/31] w-[140px]">
+          <Image alt="pactlock" src="/assets/PactLockDark.png" fill />
+        </div>
       </div>
       {/* Path 3 tempat */}
       <div className="flex h-auto w-full flex-col">
