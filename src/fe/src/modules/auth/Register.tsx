@@ -7,6 +7,7 @@ import { registerSchema } from "@/libs/schemas/auth";
 import { z } from "zod";
 import { Form, FormCaption, FormInputText, FormSubmit } from "@/components/UI/Form";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function RegisterPage() {
   type RegisterFormValues = z.infer<typeof registerSchema>;
@@ -33,7 +34,7 @@ export default function RegisterPage() {
   return (
     <DashboardBox className="flex items-center justify-center">
       <Form
-        className="w-[80%] md:w-[70%] lg:w-[80%] xl:w-[70%] 2xl:w-[58%]"
+        className="w-[80%] md:w-[70%] lg:w-[80%] xl:w-[70%] 2xl:w-[56%]"
         onSubmit={handleSubmit(onSubmit)}
       >
         <DashboardTitle

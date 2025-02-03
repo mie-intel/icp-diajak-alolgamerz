@@ -27,7 +27,7 @@ const contractList = [
   },
 ];
 
-export default function Contracts() {
+export function ViewContractList() {
   const options = ["all", "success", "pending", "invalid"];
   const [status, setStatus] = useState("all");
   const filteredContracts = contractList.filter(
@@ -59,7 +59,11 @@ export default function Contracts() {
         }
       >
         {filteredContracts.map((item) => (
-          <CardContract key={JSON.stringify(item)} className="w-full" contracts={item} />
+          <CardContract
+            key={JSON.stringify(item)}
+            className="drop-shadow-offset w-full"
+            contracts={item}
+          />
         ))}
       </DashboardBox>
     </>

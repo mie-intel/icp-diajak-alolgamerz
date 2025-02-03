@@ -8,7 +8,7 @@ export function DashboardBox({ className = "", children = null }) {
   return (
     <div
       className={cn(
-        "h-full w-full bg-white p-[7px] md:rounded-lg md:p-[15px] lg:rounded-2xl lg:p-[20px] 2xl:p-[25px]",
+        "h-full w-full rounded-2xl bg-white p-[7px] max-lg:relative md:rounded-lg md:p-[15px] lg:rounded-2xl lg:p-[20px] 2xl:p-[25px]",
         className,
       )}
     >
@@ -68,7 +68,6 @@ export function DashboardSectionTitle({ className = "", title = "" }) {
     </h3>
   );
 }
-
 export function DashboardData({
   className = "",
   title = "",
@@ -112,8 +111,8 @@ export function DashboardData({
           </button>
         )}
         {verified && !hidden && (
-          <div className="aspect-[1/1] w-[20px] text-[#05CD99] text-lightpurple hover:text-purple">
-            <AiFillCheckCircle className="h-full w-full" />
+          <div className="aspect-[1/1] w-[20px] text-lightpurple hover:text-purple">
+            <AiFillCheckCircle className="h-full w-full text-[#05CD99]" />
           </div>
         )}
         {date && (
@@ -124,4 +123,12 @@ export function DashboardData({
       </div>
     </div>
   );
+}
+
+export function LineHorizontal({ className }) {
+  return <div className={cn("mt-[20px] h-[0.5px] w-full bg-lightpurple", className)} />;
+}
+
+export function LineVertical({ className }) {
+  return <div className={cn("mx-[5px] h-[100px] w-[0.5px] bg-lightpurple", className)} />;
 }
