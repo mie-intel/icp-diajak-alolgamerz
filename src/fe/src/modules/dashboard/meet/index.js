@@ -59,25 +59,39 @@ function FormInputText({
   );
 }
 
-export default function MeetingRoom({ roomId }){
+export default function MeetingRoom(){
   // unauthorized, ongoing, left, processing, done
   const [meetState, setMeetState] = useState("unauthorized");
   const [username, setUsername] = useState("User");
-  
-  if(meetState == "unauthorized"){
+  const [roomId, setRoomId] = useState("");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setRoomId(params.get('id') || ""); // More direct access
+  }, []);
+
+  if (meetState == "unauthorized") {
     function handleSubmit(event) {
       event.preventDefault();
+      if (!username || !roomId) return;
+
+      // Update URL
+      const searchParams = new URLSearchParams(window.location.search);
+      searchParams.set('id', roomId);
+      window.history.replaceState(
+        null, 
+        '', 
+        `${window.location.pathname}?${searchParams}`
+      );
+
       setMeetState("ongoing");
     }
 
-    const handleChange = (event) => {
-      setUsername(event.target.value);
-    };
-
     return (
       <DashboardBox className="flex flex-col justify-center items-center w-full h-full relative min-h-[88dvh]">
-        <DashboardSuperTitle className="w-fit" title={roomId}/>
-        <FormInputText className="w-[30%]" title="Username" value={username} onchange={handleChange} placeholder="User"/>
+        <DashboardSuperTitle className="w-fit" title="Join Room"/>
+        <FormInputText className="w-[30%]" title="Room ID" value={roomId} onchange={(event) => setRoomId(event.target.value)} placeholder="User"/>
+        <FormInputText className="w-[30%]" title="Username" value={username} onchange={(event) => setUsername(event.target.value)} placeholder="User"/>
         <Button1 type="submit" className="w-[30%] !m-4" onClick={handleSubmit}>
           Submit
         </Button1>

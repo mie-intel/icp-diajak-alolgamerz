@@ -293,14 +293,14 @@ export default function Meet({ roomId, username, exitRoom }) {
           ))}
         </div>
         
-        <DashboardBox className="w-fit h-auto gap-[10px] flex items-center justify-center bg-grey lg:!absolute !fixed  lg:!bottom-4 bottom-24 left-[50%] -translate-x-[50%]">
-          <Button1 className={cn(audio ? "bg-darkpurple hover:bg-purple hover:text-darkpurple" : "bg-red-500 hover:bg-red-300", "size-16 flex items-center justify-center text-white outline-0 !mt-0 !text-xl")} onClick={toggleAudio}>{
+        <DashboardBox className="w-fit h-auto gap-[10px] flex items-center justify-center bg-grey lg:!absolute !fixed  lg:!bottom-4 bottom-24 left-[50%] -translate-x-[50%] !rounded-xl !p-3 md:!p-4">
+          <Button1 className={cn(audio ? "bg-darkpurple hover:bg-purple hover:text-darkpurple" : "bg-red-500 text-white hover:text-red-800  hover:bg-red-300", "size-16 flex items-center justify-center text-white outline-0 !mt-0 !text-xl")} onClick={toggleAudio}>{
             audio ? <MdOutlineMicNone className="size-12"/> : <MdOutlineMicOff className="size-12"/>
           }</Button1>
-          <Button1 className={cn(video ? "bg-darkpurple hover:bg-purple hover:text-darkpurple" : "bg-red-500 hover:bg-red-300", "size-16 flex items-center justify-center text-white outline-0 !mt-0 !text-xl")} onClick={toggleVideo}>{
+          <Button1 className={cn(video ? "bg-darkpurple hover:bg-purple hover:text-darkpurple" : "bg-red-500 text-white hover:text-red-800  hover:bg-red-300", "size-16 flex items-center justify-center text-white outline-0 !mt-0 !text-xl")} onClick={toggleVideo}>{
             video ? <MdOutlineVideocam className="size-12"/> : <MdOutlineVideocamOff className="size-12"/>
           }</Button1>
-          <Button1 className="bg-red-500 text-white size-16 w-24 hover:bg-red-300 !ml-6 !mt-0 !text-xl" onClick={exitRoom}>{
+          <Button1 className="bg-red-500 text-white hover:text-red-800  hover:bg-red-300 size-16 w-24 !ml-6 !mt-0 !text-xl" onClick={exitRoom}>{
             <MdCallEnd className="size-8" />
           }</Button1>
         </DashboardBox>
