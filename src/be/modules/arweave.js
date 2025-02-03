@@ -1,17 +1,17 @@
 import Arweave from "arweave";
 // DELETE ON PRODUCTION
-import { createWallet } from "../dev/initArweave";
+// import { createWallet } from "../dev/initArweave";
 
 let key, arweave;
 
 async function init() {
     // DELETE ON PRODUCTION
-    key = await createWallet();
-    // key = JSON.parse(process.env.ARWEAVE_KEY);
+    // key = await createWallet();
+    key = JSON.parse(process.env.ARWEAVE_KEY);
     arweave = Arweave.init({
-        host: "localhost",
-        port: 1984,
-        protocol: "http",
+        host: process.env.ARWEAVE_HOST,
+        port: parseInt(process.env.ARWEAVE_HOST),
+        protocol: process.env.ARWEAVE_PROTOCOL,
         logging: false
     });
 }

@@ -17,7 +17,7 @@ const useLocalStorage = (key, initial) => {
       }
     }
   }, [key]);
-
+  
   const setLocalStorage = (item) => {
     setCurrentLocalStorage(item);
     let val = JSON.stringify(item);
