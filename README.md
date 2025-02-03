@@ -10,13 +10,13 @@ v1.0.0
 
 ## Background
 
-Our products is build based on this several issues
+Our product is built based on this issue:
 
-- The Supreme Court (Mahkamah Agung) adjudicated 2.283 cases in total involving breach of contract (wanprestasi) [https://putusan3.mahkamahagung.go.id]. Wanprestasi leads by some major causes, such as poorly organized contracts, unethical individuals, and corrupt practices (Wagiu et al., 2023).
+> The Supreme Court (Mahkamah Agung) adjudicated 2.283 cases in total involving breach of contract (wanprestasi) [https://putusan3.mahkamahagung.go.id]. Wanprestasi leads by some major causes, such as poorly organized contracts, unethical individuals, and corrupt practices (Wagiu et al., 2023).
 
 ## What We Offer?
 
-Introducing PactLock, an innovative web 3.0 solution that leverages blockchain technology to provide a secure and immutable place for contract discussions, storage, and management. Our product utilizes decentralized storage so that all contracts are permanently archived and accessible only to authorized parties, ensuring transparency and security. We guarantee the integrity, permanence, and security of all digital agreements by harnessing blockchain’s trustless infrastructure for contract-making and management into a more transparent and efficient process.
+Introducing PactLock, an innovative Web 3.0 solution that leverages blockchain technology to provide a secure and immutable place for contract discussions, storages, and managements. Our product utilizes decentralized storage so that all contracts are permanently archived and accessible only to authorized parties, ensuring transparency and security. We guarantee the integrity, permanence, and security of all digital agreements by harnessing blockchain’s trustless infrastructure for contract-making and management into a more transparent and efficient process.
 
 ## Main Features
 
@@ -42,7 +42,7 @@ Inside that contract, you can add some `documents` / `meeting records`.
 
 ## Prerequisites
 
-- NPM > 23.0.0
+- npm > 23.0.0
 - dfx
 - Internet Identity
 
@@ -117,108 +117,7 @@ You can create new contracts with several other user here. This will generate ne
 ## Contributor
 
 1. Atila Ghulwani Altamis (Back End Developer)
-2. Radhya Cahya Kusuma (Stream Developer)
+2. Radhya Cahya Kusuma (Streaming Developer)
 3. Polikarpus Arya Pradhanika (Front End Developer)
 4. Rai Kana Abhimatta (UI Designer)
-5. Naura Khairunnisa Zayana (Business Development)
-
-# Azle Hello World
-
-- [Installation](#installation)
-- [Deployment](#deployment)
-
-Azle helps you to build secure decentralized/replicated servers in TypeScript or JavaScript on [ICP](https://internetcomputer.org/). The current replication factor is [13-40 times](https://dashboard.internetcomputer.org/subnets).
-
-Please remember that Azle is in beta and thus it may have unknown security vulnerabilities due to the following:
-
-- Azle is built with various software packages that have not yet reached maturity
-- Azle does not yet have multiple independent security reviews/audits
-- Azle does not yet have many live, successful, continuously operating applications deployed to ICP
-
-## Installation
-
-> Windows is only supported through a Linux virtual environment of some kind, such as [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)
-
-You will need [Node.js 20](#nodejs-20) and [dfx](#dfx) to develop ICP applications with Azle:
-
-### Node.js 20
-
-It's recommended to use nvm to install Node.js 20:
-
-```bash
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-```
-
-Restart your terminal and then run:
-
-```bash
-nvm install 20
-```
-
-Check that the installation went smoothly by looking for clean output from the following command:
-
-```bash
-node --version
-```
-
-### dfx
-
-Install the dfx command line tools for managing ICP applications:
-
-```bash
-DFX_VERSION=0.22.0 sh -ci "$(curl -fsSL https://internetcomputer.org/install.sh)"
-```
-
-Check that the installation went smoothly by looking for clean output from the following command:
-
-```bash
-dfx --version
-```
-
-## Deployment
-
-To create and deploy a simple sample application called `hello_world`:
-
-```bash
-# create a new default project called hello_world
-npx azle new hello_world --http-server --experimental
-cd hello_world
-```
-
-```bash
-# install all npm dependencies including azle
-npm install
-```
-
-```bash
-# start up a local ICP replica
-dfx start --clean
-```
-
-In a separate terminal in the `hello_world` directory:
-
-```bash
-# deploy your canister
-dfx deploy
-```
-
-If you would like your canister to autoreload on file changes:
-
-```bash
-AZLE_AUTORELOAD=true dfx deploy
-```
-
-View your frontend in a web browser at `http://[canisterId].raw.localhost:8000`.
-
-To obtain your application's [canisterId]:
-
-```bash
-dfx canister id backend
-```
-
-Communicate with your canister using any HTTP client library, for example using `curl`:
-
-```bash
-curl http://[canisterId].raw.localhost:8000/db
-curl -X POST -H "Content-Type: application/json" -d "{ \"hello\": \"world\" }" http://[canisterId].raw.localhost:8000/db/update
-```
+5. Naura Khairunnisa Zayyana (Business Development)
