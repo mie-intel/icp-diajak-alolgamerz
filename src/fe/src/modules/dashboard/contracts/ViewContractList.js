@@ -6,11 +6,9 @@ import { DashboardHeader } from "@/components/UI/Dashboard/DashboardSkeleton";
 import { cn } from "@/libs/utils";
 import { useState } from "react";
 import { def_contract, def_list_contractItem } from "../../../libs/keys";
-import {convertStatus} from "@/libs/utils"
+import { convertStatus } from "@/libs/utils";
 
-const contractList = [
-{...def_contract}
-];
+const contractList = [{ ...def_contract }];
 
 export function ViewContractList() {
   const options = ["all", "success", "pending", "rejected"];

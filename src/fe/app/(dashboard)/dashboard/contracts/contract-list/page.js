@@ -1,5 +1,9 @@
-import {ViewContractList} from "@/modules/dashboard/contracts/ViewContractList"
+import { ViewContractList } from "@/modules/dashboard/contracts/ViewContractList";
 
-export default function Page(){
-    return <ViewContractList />
-}   
+export default function Page() {
+  return (
+    <>
+      <ViewContractList />
+    </>
+  );
+}
