@@ -26,12 +26,16 @@ const io = new Server(httpServer, {
 });
 
 // main variables
-let rooms = {} // { roomId1: { clients: [{ socketId, username }] }, }
+let rooms = {} // { roomId1: { clients: [{ socketId, username }], timeout }, }
 let peers = {} // { socketId1: { roomId, username }, }
 
 const createRoom = (roomId) => {
   if(rooms[roomId]) return;
-  rooms[roomId] = { clients: [] };
+  rooms[roomId] = { clients: [], timeout: null };
+}
+
+const destroyRoom = (roomId) => {
+  delete rooms[roomId];
 }
 
 io.on('connection', async socket => {
@@ -40,6 +44,7 @@ io.on('connection', async socket => {
   socket.on('join', ({ roomId, username }, callback) => {
     // handle room joining
     if(!rooms[roomId]) createRoom(roomId);
+    if(rooms[roomId]) clearTimeout(rooms[roomId].timeout);
     console.log(`[Client] ${username} ID ${socket.id} joined room ${roomId}`);
 
     const clients = rooms[roomId].clients;
@@ -74,6 +79,10 @@ io.on('connection', async socket => {
       socket.to(roomId).emit('removePeer', socket.id);
       console.log(`[Client] ${socket.id} exited room ${roomId}`);
       delete peers[socket.id];
+      if(Object.keys(peers).length == 0){
+        // destroy room after 1 hour
+        rooms[roomId].timeout = setTimeout(() => destroyRoom(roomId), 3600000); 
+      }
     }
   })
 })
