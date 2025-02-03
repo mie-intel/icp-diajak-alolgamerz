@@ -1,8 +1,8 @@
 import { contractsModel, itemsModel, userModel } from "../modules/models";
 import { contractsBodySchema, contractsIDBodySchema, itemBodySchema, itemIDBodySchema, meetingBodySchema } from "../modules/schema";
 import { createDiffieHellman } from "crypto";
-import { upload } from "../modules/arweave.js";
 import { hashFile } from "../modules/crypto";
+// import { upload } from "../modules/arweave.js";
 
 export function GETroot(req, res) {
     const cIDs = JSON.parse(userModel.get({ uID: req.session.uID })[0].contracts);
@@ -180,7 +180,7 @@ export async function POSTidItem(req, res) {
         req.body.fileHash = hashFile(req.body.fileBlob, req.body.parties);
 
         // Upload data to storage
-        req.body.fileID = await upload(req.body.fileBlob);
+        // req.body.fileID = await upload(req.body.fileBlob);
     } else if (req.body.type === "meeting") {
         // Set meeting data
         req.body.meetingEnded = 0;

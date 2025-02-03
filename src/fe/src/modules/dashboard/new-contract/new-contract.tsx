@@ -19,7 +19,7 @@ export default function NewContract() {
     resolver: zodResolver(newContractSchema),
     defaultValues: {
       contractName: "",
-      partiesList: "",
+      partiesList: [],
       contractDescription: "",
     },
   });

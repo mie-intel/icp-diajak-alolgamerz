@@ -12,7 +12,7 @@ export default function AuthLayout({ children }) {
         {children}
       </div>
       <div className="min-h-screen w-[50%] bg-[red] bg-white max-lg:hidden">
-        <div className="flex h-screen w-full flex-col items-center justify-center rounded-bl-[15%] bg-[red] bg-[url('/assets/auth/bg.png')] bg-cover bg-right font-dmSans text-[100px]">
+        <div className="flex h-screen w-full text-white flex-col items-center justify-center rounded-bl-[15%] bg-[red] bg-[url('/assets/auth/bg.png')] bg-cover bg-right font-dmSans text-[100px]">
           <h1 className="max-w-[50%] font-[600] lg:text-[40px] 2xl:text-[65px]">
             <div className="relative aspect-[131/30] w-[45%]">
               <div className="absolute left-0 top-0 -ml-[10px] aspect-[131/30] w-full">

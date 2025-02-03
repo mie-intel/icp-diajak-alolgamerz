@@ -14,6 +14,7 @@ export function capitalizeFirstLetter(val) {
 }
 
 export function truncate(arrayStr, maxLength = 20) {
+  if(!arrayStr) return ""
   if (arrayStr.length === 0) return "";
   if (arrayStr.length === 1) return arrayStr[1];
   let result = arrayStr[0];
@@ -29,4 +30,10 @@ export function truncate(arrayStr, maxLength = 20) {
     }
   });
   return result;
+}
+
+export function convertStatus(isFinalised){
+  if(isFinalised === -1) return "rejected"
+  if(isFinalised === 0) return "pending"
+  return "accepted"
 }

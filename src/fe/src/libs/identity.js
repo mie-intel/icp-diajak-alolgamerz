@@ -25,7 +25,7 @@ async function initiateAC(){
     });
 }
 
-export async function login() {
+export async function login(callback) {
     if(!authClient) {await initiateAC();}
     if(!(await authClient.isAuthenticated())) {
         await authClient.login({
@@ -36,8 +36,17 @@ export async function login() {
 
                 Actor.agentOf(backend).replaceIdentity(identity);
                 Actor.agentOf(system_api).replaceIdentity(identity);
+
+                if(callback) {callback();}
             }
         });
+    } else {
+        identity = await authClient.getIdentity();
+
+        Actor.agentOf(backend).replaceIdentity(identity);
+        Actor.agentOf(system_api).replaceIdentity(identity);
+
+        if(callback) {callback();}   
     }
 }
 
@@ -72,7 +81,13 @@ export async function getPrivateKey() {
 }
 
 export async function getPrincipal() {
-    if(!identity) {throw "ER_NOT_LOGGED_IN";}
+    if(!authClient) {await initiateAC();}
+    if(!identity && authClient.isAuthenticated()) {
+        identity = await authClient.getIdentity();
+
+        Actor.agentOf(backend).replaceIdentity(identity);
+        Actor.agentOf(system_api).replaceIdentity(identity);
+    } else if (!identity) {throw "ER_NOT_LOGGED_IN";}
     return identity.getPrincipal();
 }
 

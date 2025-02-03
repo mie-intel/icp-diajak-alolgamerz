@@ -10,7 +10,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="antialiased">
-        <AuthLayout>{children}</AuthLayout>
+        <ToastProvider>
+          <AuthLayout>{children}</AuthLayout>
+        </ToastProvider>
       </body>
     </html>
   );
