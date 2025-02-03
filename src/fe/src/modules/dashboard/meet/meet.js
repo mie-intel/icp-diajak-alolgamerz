@@ -41,7 +41,7 @@ function VideoPlayer({ stream }) {
 
 function VideoContainer({ username, children }){
   return(
-    <div className="w-full aspect-[4/3] overflow-hidden rounded-md">
+    <div className="w-full aspect-[4/3] overflow-hidden rounded-md bg-black flex justify-center items-center">
       {children}
     </div>
   )

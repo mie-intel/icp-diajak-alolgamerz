@@ -67,7 +67,7 @@ export default function MeetingRoom(){
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    setRoomId(params.get('id') || ""); // More direct access
+    setRoomId(params.get('roomID') || ""); // More direct access
   }, []);
 
   if (meetState == "unauthorized") {
@@ -77,7 +77,7 @@ export default function MeetingRoom(){
 
       // Update URL
       const searchParams = new URLSearchParams(window.location.search);
-      searchParams.set('id', roomId);
+      searchParams.set('roomID', roomId);
       window.history.replaceState(
         null, 
         '', 
