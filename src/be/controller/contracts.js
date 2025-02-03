@@ -1,6 +1,8 @@
 import { contractsModel, itemsModel, userModel } from "../modules/models";
-import { contractsBodySchema, contractsIDBodySchema, itemBodySchema, itemIDBodySchema } from "../modules/schema";
-import { createDiffieHellman, createHash } from "crypto";
+import { contractsBodySchema, contractsIDBodySchema, itemBodySchema, itemIDBodySchema, meetingBodySchema } from "../modules/schema";
+import { createDiffieHellman } from "crypto";
+import { upload } from "../modules/arweave.js";
+import { hashFile } from "../modules/crypto";
 
 export function GETroot(req, res) {
     const cIDs = JSON.parse(userModel.get({ uID: req.session.uID })[0].contracts);
@@ -120,7 +122,7 @@ export function POSTid(req, res) {
     res.status(200).json("Response received");
 }
 
-export function POSTidItem(req, res) {
+export async function POSTidItem(req, res) {
     try {
         itemBodySchema.parse(req.body);
     } catch (err) {
@@ -173,17 +175,24 @@ export function POSTidItem(req, res) {
         return ;
     }
 
+    if(req.body.type === "document") {
+        // Create hash
+        req.body.fileHash = hashFile(req.body.fileBlob, req.body.parties);
+
+        // Upload data to storage
+        req.body.fileID = await upload(req.body.fileBlob);
+    } else if (req.body.type === "meeting") {
+        // Set meeting data
+        req.body.meetingEnded = 0;
+
+        // TODO
+        req.body.meetingURL = "";
+    }
+
     req.body.parties = JSON.stringify(req.body.parties.map(uID => {
         return {uID: uID, state: "pending"};
     }));
     req.body.cID = req.params.cID;
-
-    if(req.body.type === "document") {
-        // Create hash
-        req.body.hash = createHash(process.env.HASH_ALGORITHM).update(Buffer.from(req.body.fileBlob, "base64")).digest().toString("base64");
-
-        // TODO: Upload data to IPFS
-    }
 
     itemsModel.create(req.body);
 
@@ -249,4 +258,57 @@ export function POSTidItemId(req, res) {
 
     itemsModel.update({ isFinalised: isFinalised, parties: JSON.stringify(newP) }, { iID: req.params.iID });
     res.status(200).json("Response received");
+}
+
+export function GETitemIdMeeting(req, res) {
+    const item = itemsModel.get({ iID: req.params.iID })[0];
+    if(item.meetingEnded || Date.now() < new Date(item.meetingDate)) {
+        res.status(200).json(false);
+        return ;
+    }
+
+    res.status(200).json(true);
+}
+
+function isPartySame(arra, arrb) {
+    arra = arra.map(obj => {return obj.uID;}).sort((a, b)=>{return a - b});
+    arrb = arrb.map(obj => {return obj.uID;}).sort((a, b)=>{return a - b});
+    if(arra.length !== arrb.length) {return false;}
+    for (let i = 0; i < arra.length; i++) {
+        if(arra[i] !== arrb[i]) {return false;}
+    }
+    return true;
+}
+export function POSTitemIdMeeting(req, res) {
+    try {
+        meetingBodySchema.parse(req.body);
+    } catch (err) {
+        res.status(400).json("Invalid request body");
+        return ;
+    }
+
+    const item = itemsModel.get({ iID: req.params.iID })[0];
+
+    if(item.meetingFileID) {
+        res.status(409).json("Duplicate response");
+        return ;
+    }
+
+    if(!isPartySame(JSON.parse(item.parties), req.body.meetingFileID)) {
+        res.status(409).json("Party not equal to item's party");
+        return ;
+    }
+
+    req.body.meetingFileID = JSON.stringify(req.body.meetingFileID);
+    itemsModel.update(req.body, { iID: req.params.iID });
+    res.status(200).json("Response received");
+}
+
+export function POSTitemIdMeetingEnd(req, res) {
+    if(itemsModel.get({ iID: req.params.iID })[0].meetingEnded === 1) {
+        res.status(409).json("Meeting has already ended");
+        return ;
+    }
+    itemsModel.update({ meetingEnded: 1 }, { iID: req.params.iID });
+    res.status(200).json("Meeting ended");
 }

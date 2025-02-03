@@ -2,7 +2,7 @@ import axios from "axios";
 import { contractsModel, itemsModel, userModel } from "../modules/models";
 import { createDiffieHellman } from "crypto";
 import dotenv from "dotenv";
-import { encrypt, getKE, updateKE } from "../dev/keyExchange";
+import { getKE, updateKE } from "../dev/keyExchange";
 
 dotenv.config({ path: ".env.local" });
 
@@ -35,6 +35,8 @@ const userCredentials = [
         uID: 0
     }
 ];
+
+let myhash;
 const userKeys = [genKeys(), genKeys(), genKeys()];
 const b64 = Buffer.from("sigma").toString("base64");
 let sharedSecret;
@@ -174,7 +176,7 @@ describe("API Testing", ()=>{
         describe("GET /account/:id", ()=>{
             it("Retrieve account detail", async ()=>{
                 const {data} = (await publicAxios.get("/account/1"));
-                expect(Object.keys(data)).toEqual(userModel.keys.filter(val=>{return val!=="contracts"}));
+                expect(Object.keys(data)).toEqual(userModel.keys.filter(val=>{return (val!=="contracts" && val!=="principal")}));
             });
 
             it("Rejects not found user", async ()=>{
@@ -404,6 +406,7 @@ describe("API Testing", ()=>{
                         description: "description",
                         parties: [1],
                         type: "document",
+                        fileName: "a.js",
                         fileBlob: (new Buffer(17)).toString("base64")
                     }, {}, "File size too big", 400);
                 });
@@ -454,9 +457,11 @@ describe("API Testing", ()=>{
                         description: "description",
                         parties: [1, 2, 3],
                         type: "document",
-                        fileBlob: Buffer.from("sigma").toString("base64")
+                        fileName: "a.js",
+                        fileBlob: b64
                     })).data;
                     expect(Object.keys(data)).toEqual(itemsModel.keys);
+                    myhash = data.fileHash;
                 });
 
                 it("Create meeting item", async()=>{
@@ -465,7 +470,7 @@ describe("API Testing", ()=>{
                         description: "description",
                         parties: [1, 2],
                         type: "meeting",
-                        meetingDate: (new Date(Date.now()+1000*10)).toISOString()
+                        meetingDate: (new Date(Date.now()+1000)).toISOString()
                     })).data;
                     expect(Object.keys(data)).toEqual(itemsModel.keys);
                 });
@@ -479,6 +484,7 @@ describe("API Testing", ()=>{
                 it("Retrieve item details", async ()=>{
                     const data = (await userAxios[0].get("/contracts/3/item/1", {})).data;
                     expect(Object.keys(data)).toEqual(itemsModel.keys);
+                    expect(data.fileID).toBeTruthy();
                 });
             });
 
@@ -524,13 +530,212 @@ describe("API Testing", ()=>{
                     }, {}, "Item has already been finalised", 403);  
                 });
             });
+
+            describe("POST /contracts/:cID/item/:iID/meeting/", ()=>{
+                it("Rejects invalid request body", async ()=>{
+                    await expectsError(userAxios[0], "post", "/contracts/3/item/2/meeting", {}, {}, "Invalid request body", 400);
+
+                    await expectsError(userAxios[0], "post", "/contracts/3/item/2/meeting", {
+                        meetingFileID: [{
+                            uID: 1,
+                            id: "myid",
+                            hash: b64
+                        },{
+                            uID: 2,
+                            id: "myid",
+                            hash: "myhash"
+                        }]
+                    }, {}, "Invalid request body", 400);
+        
+                    await expectsError(userAxios[0], "post", "/contracts/3/item/2/meeting", {
+                        meetingFileID: [{
+                            uID: 1,
+                            id: "myid",
+                            hash: "myhash"
+                        },{
+                            uID: 2,
+                            id: "myid",
+                            hash: "myhash"
+                        }],
+                        additional: "additional"
+                    }, {}, "Invalid request body", 400);
+        
+                    await expectsError(userAxios[0], "post", "/contracts/3/item/2/meeting", {
+                        meetingFileID: [{
+                            uID: 1,
+                            id: "myid",
+                            hash: b64
+                        },{
+                            uID: 2,
+                            id: "myid",
+                            hash: b64
+                        }]
+                    }, {headers: {"Content-Type": "application/x-www-form-urlencoded"}}, "Invalid request body", 400);  
+                });
+
+                it("Rejects party not equal to item's party", async ()=>{
+                    await expectsError(userAxios[0], "post", "/contracts/3/item/2/meeting", {
+                        meetingFileID: [{
+                            uID: 1,
+                            id: "myid",
+                            hash: b64
+                        }]
+                    }, {}, "Party not equal to item's party", 409);
+
+                    await expectsError(userAxios[0], "post", "/contracts/3/item/2/meeting", {
+                        meetingFileID: [{
+                            uID: 1,
+                            id: "myid",
+                            hash: b64
+                        }, {
+                            uID: 999,
+                            id: "myid",
+                            hash: b64
+                        }, {
+                            uID: 2,
+                            id: "myid",
+                            hash: b64
+                        }]
+                    }, {}, "Party not equal to item's party", 409);
+
+                    await expectsError(userAxios[0], "post", "/contracts/3/item/2/meeting", {
+                        meetingFileID: [{
+                            uID: 1,
+                            id: "myid",
+                            hash: b64
+                        }, {
+                            uID: 2,
+                            id: "myid",
+                            hash: b64
+                        },
+                        {
+                            uID: 3,
+                            id: "myid",
+                            hash: b64
+                        }, {
+                            uID: 4,
+                            id: "myid",
+                            hash: b64
+                        }]
+                    }, {}, "Party not equal to item's party", 409);
+                });
+
+                it("Receive response", async ()=>{
+                    const data = (await userAxios[0].post("/contracts/3/item/2/meeting", {
+                        meetingFileID: [{
+                            uID: 1,
+                            id: "myid",
+                            hash: b64
+                        }, {
+                            uID: 2,
+                            id: "myid",
+                            hash: b64
+                        }]
+                    })).data;
+                    expect(data).toBe("Response received");
+                });
+
+                it("Rejects duplicate response", async ()=>{
+                    await expectsError(userAxios[0], "post", "/contracts/3/item/2/meeting", {
+                        meetingFileID: [{
+                            uID: 1,
+                            id: "myid",
+                            hash: b64
+                        }, {
+                            uID: 2,
+                            id: "myid",
+                            hash: b64
+                        }]
+                    }, {}, "Duplicate response", 409);
+                });
+            });
+
+            describe("GET /contracts/:cID/item/:iID/meeting", ()=>{
+                it("Check if link is open", async ()=>{
+                    expect((await userAxios[0].get("/contracts/3/item/2/meeting")).data).toBe(false);
+
+                    const data = (await userAxios[0].post("/contracts/3/item", {
+                        title: "item #3",
+                        description: "description",
+                        parties: [1, 2],
+                        type: "meeting",
+                        meetingDate: (new Date(Date.now()+10)).toISOString()
+                    })).data;
+                    expect(Object.keys(data)).toEqual(itemsModel.keys);
+                    expect((await userAxios[0].get("/contracts/3/item/3/meeting")).data).toBe(true);
+                });
+            }); 
+
+            describe("POST /contracts/:cID/item/:iID/meeting/end", ()=>{
+                it("End's a meeting", async ()=>{
+                    expect((await userAxios[0].post("/contracts/3/item/2/meeting/end")).data).toBe("Meeting ended");
+                    expect((await userAxios[0].get("/contracts/3/item/2/meeting")).data).toBe(false);
+                });
+            });
+        });
+    });
+
+    describe("POST /proof", ()=>{
+        it("Rejects invalid request body", async()=>{
+            await expectsError(userAxios[0], "post", "/proof", {}, {}, "Invalid request body", 400);
+
+            await expectsError(userAxios[0], "post", "/proof", {
+                fileBlob: "sigma",
+                parties: [1,2,3],
+                hash: "myhash"
+            }, {}, "Invalid request body", 400);
+
+            await expectsError(userAxios[0], "post", "/proof", {
+                fileBlob: b64,
+                parties: [1,2,3],
+                hash: "myhash",
+                additional: "additional"
+            }, {}, "Invalid request body", 400);
+
+            await expectsError(userAxios[0], "post", "/proof", {
+                fileBlob: b64,
+                parties: [1,2,3],
+                hash: "myhash",
+            }, {headers: {"Content-Type": "application/x-www-form-urlencoded"}}, "Invalid request body", 400);  
+        });
+
+        it("Returns false on different content", async ()=>{
+            const data = (await userAxios[0].post("/proof", {
+                fileBlob: b64,
+                parties: [1,2,3],
+                hash: "myhash",
+            })).data;
+            expect(data).toBe(false);
+
+            const data2 = (await userAxios[0].post("/proof", {
+                fileBlob: b64,
+                parties: [1,3],
+                hash: myhash,
+            })).data;
+            expect(data2).toBe(false);
+
+            const data3 = (await userAxios[0].post("/proof", {
+                fileBlob: Buffer.from("inibedabanget").toString("base64"),
+                parties: [1,2,3],
+                hash: myhash,
+            })).data;
+            expect(data3).toBe(false);
+        });
+
+        it("Returns true on same content", async ()=>{
+            const data = (await userAxios[0].post("/proof", {
+                fileBlob: b64,
+                parties: [3,2,1],
+                hash: myhash,
+            })).data;
+            expect(data).toBe(true);
         });
     });
 
     describe("Manual work", ()=>{
         it("Check JWT expired", async () =>{
             setTimeout(async ()=>{
-                await expectsError(userAxios[0], "get", "/contracts/", {}, {}, "Session expired", 403);  
+                await expectsError(userAxios[0], "get", "/contracts", {}, {}, "Session expired", 403);  
             }, 1000*parseInt(process.env.SESSION_SECONDS_EXPIRE));
         });
     });

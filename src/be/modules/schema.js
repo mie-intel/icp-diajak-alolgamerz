@@ -9,6 +9,12 @@ export const loginBodySchema = z.object({
     principal: z.string()
 }).required().strict();
 
+export const proofBodySchema = z.object({
+    fileBlob: z.string().base64(),
+    parties: z.number().array().nonempty(),
+    hash: z.string()
+}).required().strict();
+
 export const contractsBodySchema = z.object({
     contractName: z.string(),
 	contractDescription: z.string(),
@@ -32,6 +38,7 @@ export const itemBodySchema = z.union([z.object({
 	description: z.string(),
     parties: z.number().array().nonempty(),
     type: z.enum(["document"]),
+    fileName: z.string(),
 	fileBlob: z.string().base64(),
 }).required().strict(),
 z.object({
@@ -44,4 +51,12 @@ z.object({
 
 export const itemIDBodySchema = z.object({
     state: z.enum(MOD_AGREEMENT)
+}).required().strict();
+
+export const meetingBodySchema = z.object({
+    meetingFileID: z.object({
+        uID: z.number(),
+        id: z.string(),
+        hash: z.string().base64()
+    }).required().strict().array().nonempty()
 }).required().strict();

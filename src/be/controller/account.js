@@ -58,5 +58,7 @@ export function GETid(req, res) {
 
     results.contracts = undefined;
     delete results.contracts;
+    results.principal = undefined;
+    delete results.principal;
     res.status(200).json(results);
 }
