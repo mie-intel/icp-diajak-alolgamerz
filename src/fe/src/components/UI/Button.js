@@ -1,7 +1,25 @@
 "use client";
 
+import { useForm, Controller } from "react-hook-form";
 import { cn } from "@/libs/utils";
-import { DropdownMenu } from "radix-ui";
+// import { DropdownMenu } from "radix-ui";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuGroup,
+  DropdownMenuPortal,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuRadioGroup,
+} from "@/components/UI/dropdown-menu";
 import {
   HamburgerMenuIcon,
   DotFilledIcon,
@@ -26,98 +44,60 @@ export function Button1({ className = "", children = "Submit", outline = false, 
   );
 }
 
-const ButtonDropDown = ({ ...props }) => {
-  const [bookmarksChecked, setBookmarksChecked] = React.useState(true);
-  const [urlsChecked, setUrlsChecked] = React.useState(false);
-  const [person, setPerson] = React.useState("pedro");
-
+export const ButtonDropDown = ({ control, name, ...props }) => {
   return (
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger asChild>
-        <button className="IconButton" aria-label="Customise options">
-          <HamburgerMenuIcon />
-        </button>
-      </DropdownMenu.Trigger>
+    <Controller
+      name={name}
+      control={control}
+      defaultValue=""
+      render={({ field }) => (
+        <DropdownMenu>
+          <DropdownMenuTrigger>{field.value || "Select an option"}</DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem onSelect={() => field.onChange("Edit")} shortcut="⌘ E">
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => field.onChange("Duplicate")} shortcut="⌘ D">
+              Duplicate
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onSelect={() => field.onChange("Archive")} shortcut="⌘ N">
+              Archive
+            </DropdownMenuItem>
 
-      <DropdownMenu.Portal>
-        <DropdownMenu.Content className="DropdownMenuContent" sideOffset={5}>
-          <DropdownMenu.Item className="DropdownMenuItem">
-            New Tab <div className="RightSlot">⌘+T</div>
-          </DropdownMenu.Item>
-          <DropdownMenu.Item className="DropdownMenuItem">
-            New Window <div className="RightSlot">⌘+N</div>
-          </DropdownMenu.Item>
-          <DropdownMenu.Item className="DropdownMenuItem" disabled>
-            New Private Window <div className="RightSlot">⇧+⌘+N</div>
-          </DropdownMenu.Item>
-          <DropdownMenu.Sub>
-            <DropdownMenu.SubTrigger className="DropdownMenuSubTrigger">
-              More Tools
-              <div className="RightSlot">
-                <ChevronRightIcon />
-              </div>
-            </DropdownMenu.SubTrigger>
-            <DropdownMenu.Portal>
-              <DropdownMenu.SubContent
-                className="DropdownMenuSubContent"
-                sideOffset={2}
-                alignOffset={-5}
-              >
-                <DropdownMenu.Item className="DropdownMenuItem">
-                  Save Page As… <div className="RightSlot">⌘+S</div>
-                </DropdownMenu.Item>
-                <DropdownMenu.Item className="DropdownMenuItem">Create Shortcut…</DropdownMenu.Item>
-                <DropdownMenu.Item className="DropdownMenuItem">Name Window…</DropdownMenu.Item>
-                <DropdownMenu.Separator className="DropdownMenu.Separator" />
-                <DropdownMenu.Item className="DropdownMenuItem">Developer Tools</DropdownMenu.Item>
-              </DropdownMenu.SubContent>
-            </DropdownMenu.Portal>
-          </DropdownMenu.Sub>
-
-          <DropdownMenu.Separator className="DropdownMenuSeparator" />
-
-          <DropdownMenu.CheckboxItem
-            className="DropdownMenuCheckboxItem"
-            checked={bookmarksChecked}
-            onCheckedChange={setBookmarksChecked}
-          >
-            <DropdownMenu.ItemIndicator className="DropdownMenuItemIndicator">
-              <CheckIcon />
-            </DropdownMenu.ItemIndicator>
-            Show Bookmarks <div className="RightSlot">⌘+B</div>
-          </DropdownMenu.CheckboxItem>
-          <DropdownMenu.CheckboxItem
-            className="DropdownMenuCheckboxItem"
-            checked={urlsChecked}
-            onCheckedChange={setUrlsChecked}
-          >
-            <DropdownMenu.ItemIndicator className="DropdownMenuItemIndicator">
-              <CheckIcon />
-            </DropdownMenu.ItemIndicator>
-            Show Full URLs
-          </DropdownMenu.CheckboxItem>
-
-          <DropdownMenu.Separator className="DropdownMenuSeparator" />
-
-          <DropdownMenu.Label className="DropdownMenuLabel">People</DropdownMenu.Label>
-          <DropdownMenu.RadioGroup value={person} onValueChange={setPerson}>
-            <DropdownMenu.RadioItem className="DropdownMenuRadioItem" value="pedro">
-              <DropdownMenu.ItemIndicator className="DropdownMenuItemIndicator">
-                <DotFilledIcon />
-              </DropdownMenu.ItemIndicator>
-              Pedro Duarte
-            </DropdownMenu.RadioItem>
-            <DropdownMenu.RadioItem className="DropdownMenuRadioItem" value="colm">
-              <DropdownMenu.ItemIndicator className="DropdownMenuItemIndicator">
-                <DotFilledIcon />
-              </DropdownMenu.ItemIndicator>
-              Colm Tuite
-            </DropdownMenu.RadioItem>
-          </DropdownMenu.RadioGroup>
-
-          <DropdownMenu.Arrow className="DropdownMenuArrow" />
-        </DropdownMenu.Content>
-      </DropdownMenu.Portal>
-    </DropdownMenu.Root>
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>More</DropdownMenuSubTrigger>
+              <DropdownMenuSubContent>
+                <DropdownMenuItem onSelect={() => field.onChange("Move to project…")}>
+                  Move to project…
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => field.onChange("Move to folder…")}>
+                  Move to folder…
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onSelect={() => field.onChange("Advanced options…")}>
+                  Advanced options…
+                </DropdownMenuItem>
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
+    />
   );
 };
+
+export default function FormWithDropdown() {
+  const { control, handleSubmit } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <ButtonDropDown control={control} name="dropdownOption" />
+      <Button1 type="submit">Submit</Button1>
+    </form>
+  );
+}
