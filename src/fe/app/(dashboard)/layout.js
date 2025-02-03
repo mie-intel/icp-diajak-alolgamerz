@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="flex flex-col antialiased lg:flex-row">
         <Sidebar />
-        <DashboardLayout className="flex flex-col justify-between">
+        <DashboardLayout className="flex flex-col justify-start">
           {children} <Footbar />
         </DashboardLayout>
       </body>

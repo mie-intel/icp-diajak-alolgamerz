@@ -6,7 +6,7 @@ export default function DashboardLayout({ className, children }) {
   return (
     <section
       className={cn(
-        "relative flex min-h-screen w-full flex-col bg-[blue] bg-grey p-[7px] md:p-[15px] lg:p-[20px] 2xl:p-[25px]",
+        "relative flex min-h-screen w-full flex-col justify-start bg-grey p-[7px] md:p-[15px] lg:p-[20px] 2xl:p-[25px]",
         className,
       )}
     >
