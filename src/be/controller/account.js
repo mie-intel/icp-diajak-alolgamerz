@@ -1,6 +1,8 @@
+import { encrypt } from "../modules/crypto.js";
 import { userModel } from "../modules/models.js";
 import { loginBodySchema, registerBodySchema } from "../modules/schema.js";
-import jwt from "jsonwebtoken";
+// import jwt from "jsonwebtoken";
+// import * as jose from "jose";
 
 export function POSTregister(req, res) {
     try {
@@ -37,13 +39,23 @@ export function POSTlogin(req, res) {
         return ;
     }
 
-    res.status(200).json({ session: jwt.sign({
+    const data = {
         uID: user.uID,
         businessName: user.businessName,
         principal: user.principal
-    }, process.env.JWT_PRIVATE_KEY, {
-        expiresIn: `${process.env.SESSION_SECONDS_EXPIRE}s`
-    }) });
+    };
+
+    res.status(200).json({ session: encrypt(data) });
+    // const session = jwt.sign(data, process.env.JWT_PRIVATE_KEY, {
+    //     expiresIn: `${process.env.SESSION_SECONDS_EXPIRE}s`
+    // });
+    // new jose.SignJWT(data)
+    // .setProtectedHeader({ alg: "HS256" })
+    // .setExpirationTime(`${process.env.SESSION_SECONDS_EXPIRE}s`)
+    // .sign(Buffer.from(process.env.JWT_PRIVATE_KEY, "base64")).then((session) => {
+    //     res.status(200).json({ session: session });
+    // });
+
 }
 
 export function GETid(req, res) {

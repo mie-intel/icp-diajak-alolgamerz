@@ -1,14 +1,18 @@
 "use client";
 
 import { DashboardBox, DashboardTitle } from "@/components/UI/Dashboard/DashboardBody";
+import { useRouter } from 'next/navigation'
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/libs/schemas/auth";
 import { z } from "zod";
 import { Form, FormCaption, FormInputText, FormSubmit } from "@/components/UI/Form";
 import Link from "next/link";
+import { login, getPrincipal } from "@/libs/identity";
+import { myaxios } from "@/libs/myaxios";
 
 export default function Login() {
+  const router = useRouter();
   type LoginFormValues = z.infer<typeof loginSchema>;
 
   const {
@@ -23,8 +27,26 @@ export default function Login() {
     },
   });
 
-  const onSubmit = (data: LoginFormValues) => {
-    console.log("Form data:", data);
+  const onSubmit = async (data: LoginFormValues) => {
+    let principal, payload;
+    try {
+      principal = await getPrincipal();
+      payload = {
+        principal: principal.toString()
+      }
+    } catch (err) {
+      await login(() => {window.location.reload();});
+      return ;
+    }
+
+    try {
+      const resp = await myaxios.post(process.env.NEXT_PUBLIC_BASE_URL+"/account/login", payload);
+      localStorage.setItem("session", `Bearer ${resp.data.session}`);
+      myaxios.defaults.headers.common["Authorization"] = `Bearer ${resp.data.session}`;
+      router.push("/dashboard/dashboard");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (

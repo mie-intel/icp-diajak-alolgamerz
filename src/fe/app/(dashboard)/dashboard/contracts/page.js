@@ -2,12 +2,14 @@ import {
   ViewContractDetail,
   ViewMeetingDetail,
   ViewDocumentDetail,
+  ViewContractList
 } from "@/modules/dashboard/contracts/index";
 
 export default function Page() {
   return (
     <>
-      <ViewContractDetail />
+    <ViewContractList />
+      {/* <ViewContractDetail /> */}
       {/* <ViewDocumentDetail /> */}
       {/* <ViewMeetingDetail /> */}
     </>

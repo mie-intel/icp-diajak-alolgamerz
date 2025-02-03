@@ -6,10 +6,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "@/libs/schemas/auth";
 import { z } from "zod";
 import { Form, FormCaption, FormInputText, FormSubmit } from "@/components/UI/Form";
+import { login, getPrincipal } from "@/libs/identity";
+import { useRouter } from 'next/navigation'
+
 import Link from "next/link";
 import Image from "next/image";
+import { myaxios } from "@/libs/myaxios";
 
 export default function RegisterPage() {
+  const router = useRouter()
   type RegisterFormValues = z.infer<typeof registerSchema>;
 
   const {
@@ -27,9 +32,29 @@ export default function RegisterPage() {
     },
   });
 
-  const onSubmit = (data: RegisterFormValues) => {
-    console.log("Form data:", data);
-  };
+  const onSubmit = async (data: RegisterFormValues) => {
+    let principal, payload;
+    try {
+      principal = await getPrincipal();
+      payload = {
+        businessName: data.businessName,
+        email: data.email,
+        principal: principal.toString()
+      }
+    } catch (err) {
+      await login(() => {window.location.reload();});
+      return ;
+    }
+
+    try {
+      console.log(payload);
+      const resp = await myaxios.post(process.env.NEXT_PUBLIC_BASE_URL+"/account/register", payload);
+      console.log("Berhasil");
+      router.push("/auth/login")
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   return (
     <DashboardBox className="flex items-center justify-center">
