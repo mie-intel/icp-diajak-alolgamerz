@@ -9,7 +9,8 @@ import { usePathname } from "next/navigation";
 
 export default function Footbar() {
   const curPath = usePathname();
-  const iconClassname = "w-[5vw] h-[5vw] md:w-[2.8vw] md:h-[2.8vw] self-center";
+  const iconClassname =
+    "w-[5vw] h-[5vw] md:w-[2.8vw] md:h-[2.8vw] hover:text-darkpurple self-center";
   const path = [
     {
       name: "Dashboard",
@@ -35,7 +36,7 @@ export default function Footbar() {
 
   const [active, setActive] = useState("Dashboard");
   return (
-    <div className="flex h-[9dvh] w-full justify-center bg-white lg:hidden">
+    <div className="fixed bottom-0 z-[78] flex h-[9dvh] w-full justify-center rounded-2xl bg-white lg:hidden">
       <div className="flex h-full w-[90%] justify-between p-[10px] py-[12px] md:py-[18px]">
         {path.map((item) => (
           <Link

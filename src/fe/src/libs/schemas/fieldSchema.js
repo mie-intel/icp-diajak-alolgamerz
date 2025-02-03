@@ -10,6 +10,10 @@ export const ITEM_TYPE = ["document", "meeting"];
 
 export const idSchema = z.string();
 
+export const fileSchema = z.any(); // For general file uploads.  Refine as needed (see below).
+
+export const dateSchema = z.string().or(z.date()); // Accepts strings or Date objects.  More on this below.
+
 export const namaSchema = z
   .string({ required_error: "Name should be filled!" })
   .min(2, { message: "Name must contain at least 2 characters" })
@@ -57,7 +61,7 @@ export const descriptionSchema = z
 
 export const publicKeySchema = z.string({ required_error: "Public key must be filled!" });
 
-export const partiesListSchema = z.string({ required_error: "Parties must be filled!" });
+export const partiesListSchema = z.array(z.string());
 
 export const boolSchema = z.boolean();
 

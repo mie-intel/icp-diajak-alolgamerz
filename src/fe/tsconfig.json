@@ -30,7 +30,8 @@
     "**/*.tsx",
     "app/(backend_testing)/layout.js",
     "app/(backend_testing)/layout.js",
-    "app/(auth)/auth/register/page.js"
+    "app/(auth)/auth/register/page.js",
+    "src/components/UI/dropdown-menu.js"
   ],
   "exclude": ["node_modules"]
 }

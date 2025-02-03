@@ -59,7 +59,11 @@ export function ViewContractList() {
         }
       >
         {filteredContracts.map((item) => (
-          <CardContract key={JSON.stringify(item)} className="w-full" contracts={item} />
+          <CardContract
+            key={JSON.stringify(item)}
+            className="drop-shadow-offset w-full"
+            contracts={item}
+          />
         ))}
       </DashboardBox>
     </>

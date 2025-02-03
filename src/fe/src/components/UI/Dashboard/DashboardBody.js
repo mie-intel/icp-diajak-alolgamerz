@@ -8,7 +8,7 @@ export function DashboardBox({ className = "", children = null }) {
   return (
     <div
       className={cn(
-        "h-[90dvh] w-full bg-white p-[7px] md:rounded-lg md:p-[15px] lg:h-full lg:rounded-2xl lg:p-[20px] 2xl:p-[25px]",
+        "h-full w-full rounded-2xl bg-white p-[7px] max-lg:relative md:rounded-lg md:p-[15px] lg:rounded-2xl lg:p-[20px] 2xl:p-[25px]",
         className,
       )}
     >
@@ -68,7 +68,6 @@ export function DashboardSectionTitle({ className = "", title = "" }) {
     </h3>
   );
 }
-
 export function DashboardData({
   className = "",
   title = "",

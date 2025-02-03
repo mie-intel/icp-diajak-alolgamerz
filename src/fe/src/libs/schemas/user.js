@@ -11,7 +11,7 @@ import {
 
 export const createUserSchema = z.object({
   uId: idSchema,
-  bussinessName: businessSchema,
+  businessName: businessSchema,
   email: emailSchema,
   publicKey: publicKeySchema,
   isVerified: boolSchema,
