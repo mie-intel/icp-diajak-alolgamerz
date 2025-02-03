@@ -3,24 +3,24 @@ export const registerBodySchema = z.object({
     businessName: z.string(),
     email: z.string().email(),
     principal: z.string()
-}).required().strict();
+}).strict();
 
 export const loginBodySchema = z.object({
     principal: z.string()
-}).required().strict();
+}).strict();
 
 export const proofBodySchema = z.object({
     fileBlob: z.string().base64(),
     parties: z.number().array().nonempty(),
     hash: z.string()
-}).required().strict();
+}).strict();
 
 export const contractsBodySchema = z.object({
     contractName: z.string(),
 	contractDescription: z.string(),
 	contractParties: z.number().array().nonempty()
 
-}).required().strict();
+}).strict();
 
 // "pending" is omitted
 const MOD_AGREEMENT = ["agree", "disagree"];
@@ -30,7 +30,7 @@ export const contractsIDBodySchema = z.object({
         z.string().base64(),
         z.string().base64()
     ])
-}).required().strict();
+}).strict();
 
 
 export const itemBodySchema = z.union([z.object({
@@ -40,23 +40,23 @@ export const itemBodySchema = z.union([z.object({
     type: z.enum(["document"]),
     fileName: z.string(),
 	fileBlob: z.string().base64(),
-}).required().strict(),
+}).strict(),
 z.object({
     title: z.string(),
 	description: z.string(),
     parties: z.number().array().nonempty(),
     type: z.enum(["meeting"]),
 	meetingDate: z.string().datetime()
-}).required().strict()]);
+}).strict()]);
 
 export const itemIDBodySchema = z.object({
     state: z.enum(MOD_AGREEMENT)
-}).required().strict();
+}).strict();
 
 export const meetingBodySchema = z.object({
     meetingFileID: z.object({
         uID: z.number(),
         id: z.string(),
         hash: z.string().base64()
-    }).required().strict().array().nonempty()
-}).required().strict();
+    }).strict().array().nonempty()
+}).strict();
