@@ -13,15 +13,16 @@ import {
   TableBody,
   TableCell,
 } from "@/components/UI/table";
+import Link from "next/link";
 
 import { useState } from "react";
 
-import { ButtonDropDown } from "../../../components/UI/Button";
+import { Button1, ButtonDropDown } from "../../../components/UI/Button";
 import { DashboardTitle } from "../../../components/UI/Dashboard/DashboardBody";
 import { GoArrowUpRight } from "react-icons/go";
 import { IoIosAlert, IoIosCheckmarkCircle, IoIosCloseCircle } from "react-icons/io";
 import { def_contract, def_list_contractItem } from "../../../libs/keys";
-import {convertStatus} from "@/libs/utils"
+import { convertStatus } from "@/libs/utils";
 
 const StatusCell = ({ status }) => {
   const iconStatus = {
@@ -40,10 +41,10 @@ const StatusCell = ({ status }) => {
 };
 
 export function ViewContractDetail({
-  contract = {...def_contract},
-  contractItem = [...def_list_contractItem]
+  contract = { ...def_contract },
+  contractItem = [...def_list_contractItem],
 }) {
-  console.log(JSON.stringify(contract))
+  console.log(JSON.stringify(contract));
   const [selectedItem, setSelectedItem] = useState("");
 
   const handleItemSelect = (item) => {
@@ -101,14 +102,11 @@ export function ViewContractDetail({
         </Table>
       </DashboardBox>
 
-      <ButtonDropDown
-        className={"relative w-full self-end md:w-[26%] lg:w-[17%]"}
-        option={["Document", "Video Meeting"]}
-        onSelect={handleItemSelect}
-        outline
-      >
-        Add New Item
-      </ButtonDropDown>
+      <Button1 className={"relative w-full self-end md:w-[26%] lg:w-[17%]"} outline>
+        <Link href="/dashboard/contracts/new-item" className="h-full w-full text-center">
+          Add New Item
+        </Link>
+      </Button1>
     </DashboardBox>
   );
 }
