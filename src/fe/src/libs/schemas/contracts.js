@@ -4,12 +4,14 @@ import {
   businessSchema,
   descriptionSchema,
   idSchema,
+  ITEM_TYPE,
   namaSchema,
   partiesListSchema,
 } from "./fieldSchema";
 
 export const newContractSchema = z.object({
   contractName: namaSchema,
+  itemType: z.enum(ITEM_TYPE),
   partiesList: partiesListSchema,
   contractDescription: descriptionSchema,
 });

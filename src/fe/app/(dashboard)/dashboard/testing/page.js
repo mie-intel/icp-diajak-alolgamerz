@@ -4,7 +4,7 @@ import FormWithDropdown, { ButtonDropDown } from "@/components/UI/Button";
 export default function Page() {
   return (
     <DashboardBox className="text-black">
-      <FormWithDropdown />
+      <ButtonDropDown className={"w-[50%]"} option={["Document", "Meeting"]} outline />
     </DashboardBox>
   );
 }

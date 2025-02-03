@@ -1,6 +1,11 @@
 "use client";
 
-import { DashboardBox, DashboardTitle } from "@/components/UI/Dashboard/DashboardBody";
+import {
+  DashboardBox,
+  DashboardHeading,
+  DashboardSectionTitle,
+  DashboardTitle,
+} from "@/components/UI/Dashboard/DashboardBody";
 import {
   Table,
   TableHeader,
@@ -13,6 +18,8 @@ import { CardContract } from "@/components/UI/Card/CardContract";
 import { GoArrowUpRight } from "react-icons/go";
 import { IoIosAlert, IoIosCheckmarkCircle, IoIosCloseCircle } from "react-icons/io";
 import Link from "next/link";
+import { DashboardHeader } from "@/components/UI/Dashboard/DashboardSkeleton";
+import { truncate } from "@/libs/utils";
 
 export function ViewDashboard() {
   const contractItem = [
@@ -61,10 +68,45 @@ export function ViewDashboard() {
 
   const filteredContracts = contractList.slice(0, Math.min(contractList.length, 3));
 
+  const meetingList = [
+    {
+      name: "Example Video Meetingasdasd",
+      contract: "Contract 1",
+      parties: ["Arya1", "Arya2", "Company2", "Company3", "Company5"],
+      date: "24 Jan",
+      meetStart: "16.00",
+      meetEnd: "18.00",
+    },
+    {
+      name: "Example Video Masdasdeeting",
+      contract: "Contract 1",
+      parties: ["Arya1", "Arya2", "Company2", "Company3", "Company5"],
+      date: "24 Jan",
+      meetStart: "16.00",
+      meetEnd: "18.00",
+    },
+    {
+      name: "Example Vidasdasdeo Meeting",
+      contract: "Contract 1",
+      parties: ["Arya1", "Arya2", "Company2", "Company3", "Company5"],
+      date: "24 Jan",
+      meetStart: "16.00",
+      meetEnd: "18.00",
+    },
+    {
+      name: "Example Video Meeasdasting",
+      contract: "Contract 1",
+      parties: ["Arya1", "Arya2", "Company2", "Company3", "Company5"],
+      date: "24 Jan",
+      meetStart: "16.00",
+      meetEnd: "18.00",
+    },
+  ];
+
   return (
-    <DashboardBox className="flex flex-col gap-[8px] bg-grey max-lg:overflow-y-scroll lg:gap-[16px]">
-      <DashboardBox className="flex flex-col bg-grey !p-0 md:flex-row">
-        <DashboardBox className="h-full w-full md:w-[50%]">
+    <DashboardBox className="flex flex-col gap-[8px] bg-grey max-lg:overflow-y-scroll lg:max-h-screen lg:gap-[16px]">
+      <DashboardBox className="flex flex-col justify-between bg-grey !p-0 max-lg:gap-[10px] md:flex-row lg:max-h-[44%]">
+        <DashboardBox className="h-full w-full max-lg:px-[12px] md:w-[49%]">
           <DashboardTitle title="Pending Approval" className="!mb-[5px] !mt-0" />
           <Table>
             <TableHeader>
@@ -82,11 +124,9 @@ export function ViewDashboard() {
                     className="group duration-300 hover:scale-[1.01] max-md:min-w-[70px]"
                   >
                     <button type="button">
-                      <div className="flex items-center justify-start gap-0">
-                        <span className="transition-all duration-300 group-hover:underline">
-                          {item.name}
-                        </span>
-                        <GoArrowUpRight className="mb-1 md:ml-2" />
+                      <div className="group flex items-center justify-start gap-0 text-darkpurple duration-300 hover:scale-[1.01] hover:text-lightpurple">
+                        <span className="transition-all">{item.name}</span>
+                        <GoArrowUpRight className="mb-1 duration-300 md:ml-2" />
                       </div>
                     </button>
                   </TableCell>
@@ -99,8 +139,55 @@ export function ViewDashboard() {
             </TableBody>
           </Table>
         </DashboardBox>
+        <DashboardBox className="flex h-full w-full flex-col overflow-y-scroll max-lg:px-[12px] md:w-[49%]">
+          <DashboardTitle title="Upcoming Meetings" className="!mb-[5px] !mt-0" />
+          <DashboardBox className="flex flex-col gap-[10px] !p-0 max-md:my-[5px]">
+            {meetingList.slice(0, Math.min(3, meetingList.length)).map((item) => {
+              return (
+                <DashboardBox
+                  key={JSON.stringify(item)}
+                  className="drop-shadow-offset flex h-fit w-full justify-between self-center max-md:px-[15px] max-sm:px-[8px] sm:w-[90%] md:w-full"
+                >
+                  <span className="w-fit self-center lg:w-[70%]">
+                    <DashboardHeading
+                      title={
+                        <>
+                          <button type="button">
+                            <div className="group flex items-center justify-start gap-0 text-darkpurple duration-300 hover:scale-[1.01] hover:text-lightpurple">
+                              <span className="transition-all">{item.name}</span>
+                              <GoArrowUpRight className="mb-1 duration-300 md:ml-2" />
+                            </div>
+                          </button>
+                        </>
+                      }
+                      className="!mt-0 text-[12px] sm:text-[14px] md:!mt-0 md:text-[17px] xl:text-[18px]"
+                    />
+                    <DashboardSectionTitle
+                      title={item.contract}
+                      className="!mt-0 text-[10px] sm:text-[12px] md:!mt-1 md:text-[14px] xl:text-[17px]"
+                    />
+                    <DashboardSectionTitle
+                      title={truncate(item.parties, 40)}
+                      className="!mt-0 text-[9px] text-lightpurple sm:text-[11px] md:!mt-1 md:text-[12px] xl:text-[15px]"
+                    />
+                  </span>
+                  <div className="w-fit self-center text-center">
+                    <DashboardHeading
+                      title={item.date}
+                      className="!mt-0 text-[12px] font-[500] sm:text-[14px] md:text-[17px] xl:text-[17px]"
+                    />
+                    <DashboardSectionTitle
+                      title={`${item.meetStart} - ${item.meetEnd} WIB`}
+                      className="!mt-0 text-[9px] font-[700] sm:text-[11px] md:text-[14px] xl:text-[15px]"
+                    />
+                  </div>
+                </DashboardBox>
+              );
+            })}
+          </DashboardBox>
+        </DashboardBox>
       </DashboardBox>
-      <DashboardBox className="bg-transparent !px-0">
+      <DashboardBox className="h-fit bg-transparent !px-0">
         <DashboardTitle
           title={
             <>
@@ -121,11 +208,15 @@ export function ViewDashboard() {
         />
         <DashboardBox
           className={
-            "relative grid auto-rows-min grid-cols-1 gap-[15px] bg-grey !p-0 !pt-0 md:grid-cols-2 xl:grid-cols-3"
+            "max-row-1 relative grid auto-rows-min grid-cols-1 gap-[15px] bg-grey !p-0 !pt-0 md:grid-cols-2 xl:grid-cols-3"
           }
         >
           {filteredContracts.map((item) => (
-            <CardContract key={JSON.stringify(item)} className="w-full" contracts={item} />
+            <CardContract
+              key={JSON.stringify(item)}
+              className="drop-shadow-offset w-full"
+              contracts={item}
+            />
           ))}
         </DashboardBox>
       </DashboardBox>

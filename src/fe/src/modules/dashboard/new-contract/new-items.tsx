@@ -20,6 +20,7 @@ export default function NewItems() {
     defaultValues: {
       contractName: "",
       partiesList: "",
+      itemType: "Document",
       contractDescription: "",
     },
   });
@@ -41,20 +42,16 @@ export default function NewItems() {
               register={register("contractName")}
               error={errors?.contractName}
             />
-            <FormSelect title="Parties" placeholder="Select Multiple Options" />
-            {/* <FormInputText
-              title="Parties"
-              placeholder="Enter parties name, separated by comma (,)"
-              register={register("partiesList")}
-              error={errors?.partiesList}
-            /> */}
-            {/* <FormTextArea
-              title="Contract Description"
-              placeholder="Enter text"
-              rows={7}
-              register={register("contractDescription")}
-              error={errors?.contractDescription}
-            /> */}
+            <FormSelect
+              title="Choose an Option"
+              placeholder="Select..."
+              options={["Arya1", "Arya2", "Arya3"]}
+              name="Item Type" // Field name
+              register={register("itemType", {
+                required: "This field is required", // Validation rule
+              })}
+              error={errors.itemType} // Pass error object
+            />
             <FormSubmit className="w-full lg:w-[45%]" outline>
               Create Contract
             </FormSubmit>

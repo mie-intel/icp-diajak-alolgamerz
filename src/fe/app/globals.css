@@ -34,3 +34,21 @@ body {
   font-weight: normal;
   font-style: normal;
 }
+
+/* Hide scrollbar for < lg screens */
+@media (max-width: 767px) {
+  /* For Webkit (Chrome, Safari, Edge) */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* For Firefox */
+  html {
+    scrollbar-width: none;
+  }
+
+  /* For Internet Explorer and Edge */
+  body {
+    -ms-overflow-style: none;
+  }
+}
