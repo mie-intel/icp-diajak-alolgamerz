@@ -1,11 +1,15 @@
-import { ViewMeetingDetail } from "@/modules/dashboard/contracts/";
+import {
+  ViewContractDetail,
+  ViewMeetingDetail,
+  ViewDocumentDetail,
+} from "@/modules/dashboard/contracts/index";
 
 export default function Page() {
   return (
     <>
-      {/* <ViewContractDetail /> */}
+      <ViewContractDetail />
       {/* <ViewDocumentDetail /> */}
-      <ViewMeetingDetail />
+      {/* <ViewMeetingDetail /> */}
     </>
   );
 }

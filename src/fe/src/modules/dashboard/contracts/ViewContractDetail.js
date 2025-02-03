@@ -12,6 +12,8 @@ import {
   TableCell,
 } from "@/components/UI/table";
 
+import { ButtonDropDown } from "../../../components/UI/Button";
+
 import { DashboardTitle } from "../../../components/UI/Dashboard/DashboardBody";
 import { GoArrowUpRight } from "react-icons/go";
 import { IoIosAlert, IoIosCheckmarkCircle, IoIosCloseCircle } from "react-icons/io";
@@ -87,7 +89,7 @@ export function ViewContractDetail({
         </TableHeader>
         <TableBody className={"!text-[#2B3674]"}>
           {contractItem.map((item) => (
-            <TableRow>
+            <TableRow key={JSON.stringify(item)}>
               <TableCell bold className="group duration-300 hover:scale-[1.01] max-md:min-w-[70px]">
                 <button type="button">
                   <div className="flex items-center justify-start gap-0">
@@ -108,6 +110,7 @@ export function ViewContractDetail({
           ))}
         </TableBody>
       </Table>
+      <ButtonDropDown>Add New Item</ButtonDropDown>
     </DashboardBox>
   );
 }
